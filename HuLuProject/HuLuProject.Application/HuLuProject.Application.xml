@@ -1,0 +1,110 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>HuLuProject.Application</name>
+    </assembly>
+    <members>
+        <member name="F:HuLuProject.Application.Config.MemoryCacheKey.DemoKey">
+            <summary>
+            demo缓存key
+            </summary>
+        </member>
+        <member name="F:HuLuProject.Application.Config.RedisCacheKey.DemoKey">
+            <summary>
+            demo缓存key
+            </summary>
+        </member>
+        <member name="T:HuLuProject.Application.Services.User.UserService.UserService">
+            <summary>
+            用户鉴权
+            </summary>
+        </member>
+        <member name="M:HuLuProject.Application.Services.User.UserService.UserService.Login(System.String,System.String)">
+            <summary>
+            登陆
+            </summary>
+            <param name="userName"></param>
+            <param name="passWord"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HuLuProject.Application.Services.User.UserService.UserService.Register(System.String,System.String)">
+            <summary>
+            注册
+            </summary>
+            <param name="userName"></param>
+            <param name="passWord"></param>
+            <returns></returns>
+        </member>
+        <member name="P:HuLuProject.Application.Services.Wdf.FoodService.Dtos.FoodInput.Id">
+            <summary>
+            id
+            </summary>
+        </member>
+        <member name="P:HuLuProject.Application.Services.Wdf.FoodService.Dtos.FoodInput.UserId">
+            <summary>
+            用户Id
+            </summary>
+        </member>
+        <member name="P:HuLuProject.Application.Services.Wdf.FoodService.Dtos.FoodInput.FoodName">
+            <summary>
+            食材名称
+            </summary>
+        </member>
+        <member name="P:HuLuProject.Application.Services.Wdf.FoodService.Dtos.FoodInput.CreatedTime">
+            <summary>
+            创建时间
+            </summary>
+        </member>
+        <member name="P:HuLuProject.Application.Services.Wdf.FoodService.Dtos.FoodOutput.Id">
+            <summary>
+            id
+            </summary>
+        </member>
+        <member name="P:HuLuProject.Application.Services.Wdf.FoodService.Dtos.FoodOutput.UserId">
+            <summary>
+            用户Id
+            </summary>
+        </member>
+        <member name="P:HuLuProject.Application.Services.Wdf.FoodService.Dtos.FoodOutput.FoodName">
+            <summary>
+            食材名称
+            </summary>
+        </member>
+        <member name="P:HuLuProject.Application.Services.Wdf.FoodService.Dtos.FoodOutput.CreatedTime">
+            <summary>
+            创建时间
+            </summary>
+        </member>
+        <member name="T:HuLuProject.Application.Services.Wdf.FoodService.FoodService">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:HuLuProject.Application.Services.Wdf.FoodService.FoodService.GetFoodList(System.String)">
+            <summary>
+            根据关键字获取食材列表 为空返回全部
+            </summary>
+            <param name="text">关键字</param>
+            <returns></returns>
+        </member>
+        <member name="M:HuLuProject.Application.Services.Wdf.FoodService.FoodService.AddOrUpdateFood(HuLuProject.Application.Services.Wdf.FoodService.Dtos.FoodInput)">
+            <summary>
+            新增或修改食材
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="T:HuLuProject.Application.Services.Wdf.MenuService.MenuService">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:HuLuProject.Application.Utils.JwtHelper.GetPayloads(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            获取jwt的负载
+            </summary>
+            <param name="context"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

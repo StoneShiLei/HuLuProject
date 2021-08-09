@@ -1,0 +1,241 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>HuLuProject.Core</name>
+    </assembly>
+    <members>
+        <member name="T:HuLuProject.Core.Entities.User.UserEntity">
+            <summary>
+            用户信息
+            </summary>
+        </member>
+        <member name="P:HuLuProject.Core.Entities.User.UserEntity.Id">
+            <summary>
+            id
+            </summary>
+        </member>
+        <member name="P:HuLuProject.Core.Entities.User.UserEntity.UserName">
+            <summary>
+            用户名
+            </summary>
+        </member>
+        <member name="P:HuLuProject.Core.Entities.User.UserEntity.PassWord">
+            <summary>
+            加密密码
+            </summary>
+        </member>
+        <member name="P:HuLuProject.Core.Entities.User.UserEntity.CreatedTime">
+            <summary>
+            创建日期
+            </summary>
+        </member>
+        <member name="T:HuLuProject.Core.Entities.Wfd.FoodEntity">
+            <summary>
+            食材
+            </summary>
+        </member>
+        <member name="P:HuLuProject.Core.Entities.Wfd.FoodEntity.Id">
+            <summary>
+            id
+            </summary>
+        </member>
+        <member name="P:HuLuProject.Core.Entities.Wfd.FoodEntity.UserId">
+            <summary>
+            用户Id
+            </summary>
+        </member>
+        <member name="P:HuLuProject.Core.Entities.Wfd.FoodEntity.FoodName">
+            <summary>
+            食材名称
+            </summary>
+        </member>
+        <member name="P:HuLuProject.Core.Entities.Wfd.FoodEntity.CreatedTime">
+            <summary>
+            创建时间
+            </summary>
+        </member>
+        <member name="P:HuLuProject.Core.Entities.Wfd.FoodEntity.Menus">
+            <summary>
+            导航 菜谱
+            </summary>
+        </member>
+        <member name="T:HuLuProject.Core.Entities.Wfd.MenuEntity">
+            <summary>
+            食谱
+            </summary>
+        </member>
+        <member name="P:HuLuProject.Core.Entities.Wfd.MenuEntity.Id">
+            <summary>
+            id
+            </summary>
+        </member>
+        <member name="P:HuLuProject.Core.Entities.Wfd.MenuEntity.UserId">
+            <summary>
+            用户Id
+            </summary>
+        </member>
+        <member name="P:HuLuProject.Core.Entities.Wfd.MenuEntity.MenuName">
+            <summary>
+            菜谱名称
+            </summary>
+        </member>
+        <member name="P:HuLuProject.Core.Entities.Wfd.MenuEntity.CreatedTime">
+            <summary>
+            创建时间
+            </summary>
+        </member>
+        <member name="P:HuLuProject.Core.Entities.Wfd.MenuEntity.TypeId">
+            <summary>
+            分类id
+            </summary>
+        </member>
+        <member name="P:HuLuProject.Core.Entities.Wfd.MenuEntity.Type">
+            <summary>
+            导航 分类
+            </summary>
+        </member>
+        <member name="P:HuLuProject.Core.Entities.Wfd.MenuEntity.Foods">
+            <summary>
+            导航 食材
+            </summary>
+        </member>
+        <member name="T:HuLuProject.Core.Entities.Wfd.MenuFoodEntity">
+            <summary>
+            菜谱食材关系
+            </summary>
+        </member>
+        <member name="P:HuLuProject.Core.Entities.Wfd.MenuFoodEntity.MenuId">
+            <summary>
+            menuId
+            </summary>
+        </member>
+        <member name="P:HuLuProject.Core.Entities.Wfd.MenuFoodEntity.FoodId">
+            <summary>
+            foodId
+            </summary>
+        </member>
+        <member name="P:HuLuProject.Core.Entities.Wfd.MenuFoodEntity.Menu">
+            <summary>
+            菜谱
+            </summary>
+        </member>
+        <member name="P:HuLuProject.Core.Entities.Wfd.MenuFoodEntity.Food">
+            <summary>
+            食材
+            </summary>
+        </member>
+        <member name="T:HuLuProject.Core.Entities.Wfd.TypeEntity">
+            <summary>
+            食谱的分类
+            </summary>
+        </member>
+        <member name="P:HuLuProject.Core.Entities.Wfd.TypeEntity.Id">
+            <summary>
+            id
+            </summary>
+        </member>
+        <member name="P:HuLuProject.Core.Entities.Wfd.TypeEntity.UserId">
+            <summary>
+            用户Id
+            </summary>
+        </member>
+        <member name="P:HuLuProject.Core.Entities.Wfd.TypeEntity.TypeName">
+            <summary>
+            分类名称
+            </summary>
+        </member>
+        <member name="P:HuLuProject.Core.Entities.Wfd.TypeEntity.CreatedTime">
+            <summary>
+            创建时间
+            </summary>
+        </member>
+        <member name="P:HuLuProject.Core.Entities.Wfd.TypeEntity.Menus">
+            <summary>
+            导航 菜谱
+            </summary>
+        </member>
+        <member name="T:HuLuProject.Core.Managers.BaseManager">
+            <summary>
+            Manager父类
+            </summary>
+        </member>
+        <member name="M:HuLuProject.Core.Managers.BaseManager.#ctor">
+            <summary>
+            默认使用DefaultConn数据库
+            </summary>
+        </member>
+        <member name="M:HuLuProject.Core.Managers.BaseManager.#ctor(System.String)">
+            <summary>
+            根据传入的key使用数据库
+            </summary>
+            <param name="connKey"></param>
+        </member>
+        <member name="M:HuLuProject.Core.Managers.BaseManager.Change(System.String)">
+            <summary>
+            运行期间更改数据库
+            </summary>
+            <param name="connKey"></param>
+        </member>
+        <member name="M:HuLuProject.Core.Managers.User.UserManager.CheckUserAsync(System.String,System.String)">
+            <summary>
+            检查用户凭据是否有效
+            </summary>
+            <param name="userName"></param>
+            <param name="enryptionPassWord">aes加密的密码</param>
+            <returns></returns>
+        </member>
+        <member name="M:HuLuProject.Core.Managers.User.UserManager.AddOrUpdateUserAsync(HuLuProject.Core.Entities.User.UserEntity)">
+            <summary>
+            新增或修改用户
+            </summary>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HuLuProject.Core.Managers.User.UserManager.IsExistAsync(System.String)">
+            <summary>
+            判断用户名是否存在
+            </summary>
+            <param name="userName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HuLuProject.Core.Managers.Wfd.FoodManager.GetFoodListAsync(System.String,System.String)">
+            <summary>
+            根据关键字查询食材
+            </summary>
+            <param name="userId"></param>
+            <param name="searchText"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HuLuProject.Core.Managers.Wfd.FoodManager.AddOrUpdateFoodAsync(HuLuProject.Core.Entities.Wfd.FoodEntity)">
+            <summary>
+            新增或修改食材
+            </summary>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HuLuProject.Core.Managers.Wfd.FoodManager.RemoveFoodAsync(System.String,System.String)">
+            <summary>
+            删除食材
+            </summary>
+            <param name="userId">食材所属用户id</param>
+            <param name="foodId"></param>
+            <returns></returns>
+        </member>
+        <member name="T:HuLuProject.Core.Universal.Container`1">
+            <summary>
+            分页容器
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="P:HuLuProject.Core.Universal.Container`1.Total">
+            <summary>
+            分页容器总数
+            </summary>
+        </member>
+        <member name="P:HuLuProject.Core.Universal.Container`1.Items">
+            <summary>
+            分页列表
+            </summary>
+        </member>
+    </members>
+</doc>
