@@ -1,13 +1,12 @@
-﻿using HuLuProject.Application.Services.Wdf.MenuService.Dtos;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HuLuProject.Application.Services.Wdf.TypeService.Dtos
+namespace HuLuProject.Application.Services.Wdf.MenuService.Dtos
 {
-    public class TypeOutput
+    public class MenuOutput
     {
         /// <summary>
         /// id
@@ -20,18 +19,18 @@ namespace HuLuProject.Application.Services.Wdf.TypeService.Dtos
         public string UserId { get; set; }
 
         /// <summary>
-        /// 分类名称
+        /// 菜谱名称
         /// </summary>
-        public string TypeName { get; set; }
+        public string MenuName { get; set; }
 
         /// <summary>
-        /// 创建时间
+        /// 分类Id
         /// </summary>
-        public DateTime CreatedTime { get; set; }
+        public string TypeId { get; set; }
 
         /// <summary>
-        /// 分类下的菜单
+        /// 食材id列表
         /// </summary>
-        public List<MenuOutput> Menus { get; set; }
+        public List<string> FoodIds { get; set; }
     }
 }

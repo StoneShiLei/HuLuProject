@@ -7,17 +7,12 @@ using System.Threading.Tasks;
 
 namespace HuLuProject.Application.Services.Wdf.TypeService.Dtos
 {
-    public class TypeInput
+    public class TypeDeleteInput
     {
         /// <summary>
         /// id
         /// </summary>
-        public string Id { get; set; }
-
-        /// <summary>
-        /// 分类名称
-        /// </summary>
         [Required]
-        public string TypeName { get; set; }
+        public string TypeId { get; set; }
     }
 }

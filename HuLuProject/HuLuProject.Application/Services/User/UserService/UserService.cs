@@ -1,7 +1,9 @@
 ﻿using Furion;
 using Furion.DataEncryption;
 using Furion.DistributedIDGenerator;
+using Furion.FriendlyException;
 using Furion.UnifyResult;
+using HuLuProject.Application.Services.User.UserService.Dtos;
 using HuLuProject.Core.Entities.User;
 using HuLuProject.Core.Managers.User;
 using Microsoft.AspNetCore.Authorization;
@@ -52,27 +54,65 @@ namespace HuLuProject.Application.Services.User.UserService
         /// <summary>
         /// 注册
         /// </summary>
-        /// <param name="userName"></param>
-        /// <param name="passWord"></param>
+        /// <param name="input"></param>
         /// <returns></returns>
         [HttpPost, Route("user/register"), AllowAnonymous]
-        public async Task<bool> Register([Required,FromBody]string userName, [Required, FromBody] string passWord)
+        public async Task<bool> Register([Required,FromBody] UserRegisterInput input)
         {
-            if(await userManager.IsExistAsync(userName))
+            if(await userManager.IsExistAsync(input.UserName))
             {
                 UnifyContext.Fill(new { Message = "用户名已注册" });
                 return false;
             }
 
-            passWord = DESCEncryption.Encrypt(passWord, AesKey);
+            input.PassWord = DESCEncryption.Encrypt(input.PassWord, AesKey);
             var user = new UserEntity
             {
-                Id = $"USR{IDGen.NextID(new { LittleEndianBinary16Format = true, TimeNow = DateTimeOffset.UtcNow })}",
-                UserName = userName,
-                PassWord = passWord,
+                Id = $"USR-{IDGen.NextID(new { LittleEndianBinary16Format = true, TimeNow = DateTimeOffset.UtcNow })}",
+                UserName = input.UserName,
+                PassWord = input.PassWord,
                 CreatedTime = DateTime.UtcNow,
             };
             return await userManager.AddOrUpdateUserAsync(user);
+        }
+
+        /// <summary>
+        /// 修改用户
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        [HttpPost, Route("user/modify")]
+        public async Task<bool> Modify([Required,FromBody] UserInput input)
+        {
+            if (!string.Equals(UserId, input.Id)) throw Oops.Oh("非法操作：与登陆用户UserID不一致");
+            if (await userManager.IsExistAsync(input.UserName))
+            {
+                UnifyContext.Fill(new { Message = "用户名已注册或与现用户名相同" });
+                return false;
+            }
+
+            input.PassWord = DESCEncryption.Encrypt(input.PassWord, AesKey);
+            var user = new UserEntity
+            {
+                Id = input.Id,
+                UserName = input.UserName,
+                PassWord = input.PassWord
+            };
+            return await userManager.AddOrUpdateUserAsync(user);
+        }
+
+        /// <summary>
+        /// 查询一条数据
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        [HttpGet, Route("user/get")]
+        public async Task<UserOutput> GetOne([Required] string userId)
+        {
+            if (!string.Equals(UserId, userId)) throw Oops.Oh("非法操作：与登陆用户UserID不一致");
+            var entity = await userManager.GetOneAsync(userId);
+            var result = Mapper.Map<UserOutput>(entity);
+            return result;
         }
     }
 }

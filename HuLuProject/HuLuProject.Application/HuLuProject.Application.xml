@@ -14,6 +14,46 @@
             demo缓存key
             </summary>
         </member>
+        <member name="P:HuLuProject.Application.Services.User.UserService.Dtos.UserInput.Id">
+            <summary>
+            id
+            </summary>
+        </member>
+        <member name="P:HuLuProject.Application.Services.User.UserService.Dtos.UserInput.UserName">
+            <summary>
+            用户名
+            </summary>
+        </member>
+        <member name="P:HuLuProject.Application.Services.User.UserService.Dtos.UserInput.PassWord">
+            <summary>
+            密码
+            </summary>
+        </member>
+        <member name="P:HuLuProject.Application.Services.User.UserService.Dtos.UserOutput.Id">
+            <summary>
+            id
+            </summary>
+        </member>
+        <member name="P:HuLuProject.Application.Services.User.UserService.Dtos.UserOutput.UserName">
+            <summary>
+            用户名
+            </summary>
+        </member>
+        <member name="P:HuLuProject.Application.Services.User.UserService.Dtos.UserOutput.CreatedTime">
+            <summary>
+            创建时间
+            </summary>
+        </member>
+        <member name="P:HuLuProject.Application.Services.User.UserService.Dtos.UserRegisterInput.UserName">
+            <summary>
+            用户名
+            </summary>
+        </member>
+        <member name="P:HuLuProject.Application.Services.User.UserService.Dtos.UserRegisterInput.PassWord">
+            <summary>
+            密码
+            </summary>
+        </member>
         <member name="T:HuLuProject.Application.Services.User.UserService.UserService">
             <summary>
             用户鉴权
@@ -27,32 +67,40 @@
             <param name="passWord"></param>
             <returns></returns>
         </member>
-        <member name="M:HuLuProject.Application.Services.User.UserService.UserService.Register(System.String,System.String)">
+        <member name="M:HuLuProject.Application.Services.User.UserService.UserService.Register(HuLuProject.Application.Services.User.UserService.Dtos.UserRegisterInput)">
             <summary>
             注册
             </summary>
-            <param name="userName"></param>
-            <param name="passWord"></param>
+            <param name="input"></param>
             <returns></returns>
+        </member>
+        <member name="M:HuLuProject.Application.Services.User.UserService.UserService.Modify(HuLuProject.Application.Services.User.UserService.Dtos.UserInput)">
+            <summary>
+            修改用户
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HuLuProject.Application.Services.User.UserService.UserService.GetOne(System.String)">
+            <summary>
+            查询一条数据
+            </summary>
+            <param name="userId"></param>
+            <returns></returns>
+        </member>
+        <member name="P:HuLuProject.Application.Services.Wdf.FoodService.Dtos.FoodDeleteInput.FoodId">
+            <summary>
+            id
+            </summary>
         </member>
         <member name="P:HuLuProject.Application.Services.Wdf.FoodService.Dtos.FoodInput.Id">
             <summary>
             id
             </summary>
         </member>
-        <member name="P:HuLuProject.Application.Services.Wdf.FoodService.Dtos.FoodInput.UserId">
-            <summary>
-            用户Id
-            </summary>
-        </member>
         <member name="P:HuLuProject.Application.Services.Wdf.FoodService.Dtos.FoodInput.FoodName">
             <summary>
             食材名称
-            </summary>
-        </member>
-        <member name="P:HuLuProject.Application.Services.Wdf.FoodService.Dtos.FoodInput.CreatedTime">
-            <summary>
-            创建时间
             </summary>
         </member>
         <member name="P:HuLuProject.Application.Services.Wdf.FoodService.Dtos.FoodOutput.Id">
@@ -77,7 +125,7 @@
         </member>
         <member name="T:HuLuProject.Application.Services.Wdf.FoodService.FoodService">
             <summary>
-            
+            食材接口
             </summary>
         </member>
         <member name="M:HuLuProject.Application.Services.Wdf.FoodService.FoodService.GetFoodList(System.String)">
@@ -87,6 +135,13 @@
             <param name="text">关键字</param>
             <returns></returns>
         </member>
+        <member name="M:HuLuProject.Application.Services.Wdf.FoodService.FoodService.GetOne(System.String)">
+            <summary>
+            查询一条数据
+            </summary>
+            <param name="foodId"></param>
+            <returns></returns>
+        </member>
         <member name="M:HuLuProject.Application.Services.Wdf.FoodService.FoodService.AddOrUpdateFood(HuLuProject.Application.Services.Wdf.FoodService.Dtos.FoodInput)">
             <summary>
             新增或修改食材
@@ -94,10 +149,231 @@
             <param name="input"></param>
             <returns></returns>
         </member>
+        <member name="M:HuLuProject.Application.Services.Wdf.FoodService.FoodService.RemoveFood(HuLuProject.Application.Services.Wdf.FoodService.Dtos.FoodDeleteInput)">
+            <summary>
+            删除食材
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="P:HuLuProject.Application.Services.Wdf.MenuService.Dtos.MenuDeleteInput.MenuId">
+            <summary>
+            id
+            </summary>
+        </member>
+        <member name="P:HuLuProject.Application.Services.Wdf.MenuService.Dtos.MenuInput.Id">
+            <summary>
+            id
+            </summary>
+        </member>
+        <member name="P:HuLuProject.Application.Services.Wdf.MenuService.Dtos.MenuInput.MenuName">
+            <summary>
+            菜谱名称
+            </summary>
+        </member>
+        <member name="P:HuLuProject.Application.Services.Wdf.MenuService.Dtos.MenuInput.TypeId">
+            <summary>
+            分类Id
+            </summary>
+        </member>
+        <member name="P:HuLuProject.Application.Services.Wdf.MenuService.Dtos.MenuInput.FoodIds">
+            <summary>
+            食材id列表
+            </summary>
+        </member>
+        <member name="T:HuLuProject.Application.Services.Wdf.MenuService.Dtos.MenuListOutput">
+            <summary>
+            列表页模型
+            </summary>
+        </member>
+        <member name="P:HuLuProject.Application.Services.Wdf.MenuService.Dtos.MenuListOutput.Id">
+            <summary>
+            id
+            </summary>
+        </member>
+        <member name="P:HuLuProject.Application.Services.Wdf.MenuService.Dtos.MenuListOutput.UserId">
+            <summary>
+            用户Id
+            </summary>
+        </member>
+        <member name="P:HuLuProject.Application.Services.Wdf.MenuService.Dtos.MenuListOutput.MenuName">
+            <summary>
+            菜谱名称
+            </summary>
+        </member>
+        <member name="P:HuLuProject.Application.Services.Wdf.MenuService.Dtos.MenuListOutput.TypeName">
+            <summary>
+            分类名称
+            </summary>
+        </member>
+        <member name="P:HuLuProject.Application.Services.Wdf.MenuService.Dtos.MenuListOutput.FoodNames">
+            <summary>
+            食材名称 顿号隔开
+            </summary>
+        </member>
+        <member name="P:HuLuProject.Application.Services.Wdf.MenuService.Dtos.MenuListOutput.CreatedTime">
+            <summary>
+            创建时间
+            </summary>
+        </member>
+        <member name="P:HuLuProject.Application.Services.Wdf.MenuService.Dtos.MenuOutput.Id">
+            <summary>
+            id
+            </summary>
+        </member>
+        <member name="P:HuLuProject.Application.Services.Wdf.MenuService.Dtos.MenuOutput.UserId">
+            <summary>
+            用户Id
+            </summary>
+        </member>
+        <member name="P:HuLuProject.Application.Services.Wdf.MenuService.Dtos.MenuOutput.MenuName">
+            <summary>
+            菜谱名称
+            </summary>
+        </member>
+        <member name="P:HuLuProject.Application.Services.Wdf.MenuService.Dtos.MenuOutput.TypeId">
+            <summary>
+            分类Id
+            </summary>
+        </member>
+        <member name="P:HuLuProject.Application.Services.Wdf.MenuService.Dtos.MenuOutput.FoodIds">
+            <summary>
+            食材id列表
+            </summary>
+        </member>
+        <member name="P:HuLuProject.Application.Services.Wdf.MenuService.Dtos.MenuRandomOutPut.Id">
+            <summary>
+            id
+            </summary>
+        </member>
+        <member name="P:HuLuProject.Application.Services.Wdf.MenuService.Dtos.MenuRandomOutPut.UserId">
+            <summary>
+            用户Id
+            </summary>
+        </member>
+        <member name="P:HuLuProject.Application.Services.Wdf.MenuService.Dtos.MenuRandomOutPut.MenuName">
+            <summary>
+            菜谱名称
+            </summary>
+        </member>
+        <member name="P:HuLuProject.Application.Services.Wdf.MenuService.Dtos.MenuRandomOutPut.TypeName">
+            <summary>
+            分类名称
+            </summary>
+        </member>
         <member name="T:HuLuProject.Application.Services.Wdf.MenuService.MenuService">
             <summary>
-            
+            菜谱接口
             </summary>
+        </member>
+        <member name="M:HuLuProject.Application.Services.Wdf.MenuService.MenuService.GetRandomMenuList(System.Collections.Generic.Dictionary{System.String,System.Collections.Generic.KeyValuePair{System.Int32,System.Collections.Generic.List{System.String}}})">
+            <summary>
+            随机出菜 post查询
+            </summary>
+            <param name="SearchParam">查询条件 Dict[分类id,(出菜数量,List[食材id])]</param>
+            <returns></returns>
+        </member>
+        <member name="M:HuLuProject.Application.Services.Wdf.MenuService.MenuService.GetMenuList(System.String)">
+            <summary>
+            根据关键字获取菜谱列表（包含食材） 为空返回全部
+            </summary>
+            <param name="text">关键字</param>
+            <returns></returns>
+        </member>
+        <member name="M:HuLuProject.Application.Services.Wdf.MenuService.MenuService.GetOne(System.String)">
+            <summary>
+            查询一条数据
+            </summary>
+            <param name="menuId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HuLuProject.Application.Services.Wdf.MenuService.MenuService.AddOrUpdateMenu(HuLuProject.Application.Services.Wdf.MenuService.Dtos.MenuInput)">
+            <summary>
+            新增或修改菜谱 允许同名菜谱
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HuLuProject.Application.Services.Wdf.MenuService.MenuService.RemoveMenu(HuLuProject.Application.Services.Wdf.MenuService.Dtos.MenuDeleteInput)">
+            <summary>
+            删除菜谱
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="P:HuLuProject.Application.Services.Wdf.TypeService.Dtos.TypeDeleteInput.TypeId">
+            <summary>
+            id
+            </summary>
+        </member>
+        <member name="P:HuLuProject.Application.Services.Wdf.TypeService.Dtos.TypeInput.Id">
+            <summary>
+            id
+            </summary>
+        </member>
+        <member name="P:HuLuProject.Application.Services.Wdf.TypeService.Dtos.TypeInput.TypeName">
+            <summary>
+            分类名称
+            </summary>
+        </member>
+        <member name="P:HuLuProject.Application.Services.Wdf.TypeService.Dtos.TypeOutput.Id">
+            <summary>
+            id
+            </summary>
+        </member>
+        <member name="P:HuLuProject.Application.Services.Wdf.TypeService.Dtos.TypeOutput.UserId">
+            <summary>
+            用户Id
+            </summary>
+        </member>
+        <member name="P:HuLuProject.Application.Services.Wdf.TypeService.Dtos.TypeOutput.TypeName">
+            <summary>
+            分类名称
+            </summary>
+        </member>
+        <member name="P:HuLuProject.Application.Services.Wdf.TypeService.Dtos.TypeOutput.CreatedTime">
+            <summary>
+            创建时间
+            </summary>
+        </member>
+        <member name="P:HuLuProject.Application.Services.Wdf.TypeService.Dtos.TypeOutput.Menus">
+            <summary>
+            分类下的菜单
+            </summary>
+        </member>
+        <member name="T:HuLuProject.Application.Services.Wdf.TypeService.TypeService">
+            <summary>
+            分类接口
+            </summary>
+        </member>
+        <member name="M:HuLuProject.Application.Services.Wdf.TypeService.TypeService.GetTypeList(System.String,System.Boolean)">
+            <summary>
+            根据关键字获取分类列表 为空返回全部
+            </summary>
+            <param name="text">关键字</param>
+            <param name="include">是否获取分类下的食谱</param>
+            <returns></returns>
+        </member>
+        <member name="M:HuLuProject.Application.Services.Wdf.TypeService.TypeService.GetOne(System.String)">
+            <summary>
+            查询一条数据
+            </summary>
+            <param name="typeId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HuLuProject.Application.Services.Wdf.TypeService.TypeService.AddOrUpdateType(HuLuProject.Application.Services.Wdf.TypeService.Dtos.TypeInput)">
+            <summary>
+            新增或修改分类
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HuLuProject.Application.Services.Wdf.TypeService.TypeService.RemoveType(HuLuProject.Application.Services.Wdf.TypeService.Dtos.TypeDeleteInput)">
+            <summary>
+            删除分类
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
         </member>
         <member name="M:HuLuProject.Application.Utils.JwtHelper.GetPayloads(Microsoft.AspNetCore.Http.HttpContext)">
             <summary>

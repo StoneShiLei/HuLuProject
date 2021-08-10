@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HuLuProject.Application.Services.Wdf.TypeService.Dtos
+namespace HuLuProject.Application.Services.User.UserService.Dtos
 {
-    public class TypeInput
+    public class UserInput
     {
         /// <summary>
         /// id
@@ -15,9 +15,15 @@ namespace HuLuProject.Application.Services.Wdf.TypeService.Dtos
         public string Id { get; set; }
 
         /// <summary>
-        /// 分类名称
+        /// 用户名
         /// </summary>
         [Required]
-        public string TypeName { get; set; }
+        public string UserName { get; set; }
+
+        /// <summary>
+        /// 密码
+        /// </summary>
+        [Required]
+        public string PassWord { get; set; }
     }
 }

@@ -22,12 +22,24 @@ namespace HuLuProject.Core.Managers.Wfd
         {
             Expression<Func<FoodEntity, bool>> where = f => f.UserId == userId;
 
-            if (!string.IsNullOrWhiteSpace(searchText)) where.And(f => f.FoodName.StartsWith(searchText) || f.FoodName.EndsWith(searchText));
+            if (!string.IsNullOrWhiteSpace(searchText)) where = where.And(f => f.FoodName.StartsWith(searchText) || f.FoodName.EndsWith(searchText));
 
             var result = FreeSql.Select<FoodEntity>()
                 .Where(where)
+                .OrderByDescending(f => f.CreatedTime)
                 .ToListAsync();
 
+            return result;
+        }
+
+        /// <summary>
+        /// 获取一条数据
+        /// </summary>
+        /// <param name="foodId"></param>
+        /// <returns></returns>
+        public Task<FoodEntity> GetOneAsync(string foodId)
+        {
+            var result = FreeSql.Select<FoodEntity>().Where(u => u.Id == foodId).ToOneAsync();
             return result;
         }
 
@@ -41,7 +53,7 @@ namespace HuLuProject.Core.Managers.Wfd
             var result = await FreeSql
                 .InsertOrUpdate<FoodEntity>()
                 .SetSource(entity)
-                .UpdateColumns(f => f.FoodName)
+                .UpdateColumns(f => new { f.FoodName })
                 .ExecuteAffrowsAsync();
 
             return result > 0;
@@ -66,11 +78,21 @@ namespace HuLuProject.Core.Managers.Wfd
         /// <param name="userId"></param>
         /// <param name="foodName"></param>
         /// <returns></returns>
-        public Task<bool> IsExistAsync(string userId,string foodName)
+        public Task<bool> IsExistNameAsync(string userId,string foodName)
         {
             var result = FreeSql.Select<FoodEntity>().AnyAsync(f => f.UserId == userId && f.FoodName == foodName);
             return result;
         }
 
+        /// <summary>
+        /// 判断id是否存在
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public Task<bool> IsExistAsync(string id)
+        {
+            var result = FreeSql.Select<FoodEntity>().AnyAsync(o => o.Id == id);
+            return result;
+        }
     }
 }

@@ -17,9 +17,12 @@ namespace HuLuProject.Core.Managers
         protected IFreeSql FreeSql = null;
 
         /// <summary>
-        /// 默认使用DefaultConn数据库
+        /// 默认使用第一个数据库
         /// </summary>
-        public BaseManager() : this(App.Configuration["Connection:0:DbKey"]) { }
+        public BaseManager() 
+        {
+            FreeSql = App.GetRequiredService<IFreeSql>();
+        }
 
         /// <summary>
         /// 根据传入的key使用数据库

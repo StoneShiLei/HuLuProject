@@ -23,9 +23,9 @@ namespace HuLuProject.Core.Managers.Wfd
         {
             Expression<Func<TypeEntity, bool>> where = t => t.UserId == userId;
 
-            if (!string.IsNullOrWhiteSpace(searchText)) where.And(t => t.TypeName.StartsWith(searchText) || t.TypeName.EndsWith(searchText));
+            if (!string.IsNullOrWhiteSpace(searchText)) where = where.And(t => t.TypeName.StartsWith(searchText) || t.TypeName.EndsWith(searchText));
 
-            var select = FreeSql.Select<TypeEntity>().Where(where);
+            var select = FreeSql.Select<TypeEntity>().Where(where).OrderByDescending(t => t.CreatedTime);
             if (include) select.IncludeMany(t => t.Menus);
 
             var result = select.ToListAsync();
@@ -42,10 +42,21 @@ namespace HuLuProject.Core.Managers.Wfd
             var result = await FreeSql
                 .InsertOrUpdate<TypeEntity>()
                 .SetSource(entity)
-                .UpdateColumns(f => f.TypeName)
+                .UpdateColumns(f => new { f.TypeName })
                 .ExecuteAffrowsAsync();
 
             return result > 0;
+        }
+
+        /// <summary>
+        /// 获取一条数据
+        /// </summary>
+        /// <param name="typeId"></param>
+        /// <returns></returns>
+        public Task<TypeEntity> GetOneAsync(string typeId)
+        {
+            var result = FreeSql.Select<TypeEntity>().Where(u => u.Id == typeId).ToOneAsync();
+            return result;
         }
 
         /// <summary>
@@ -67,9 +78,20 @@ namespace HuLuProject.Core.Managers.Wfd
         /// <param name="userId"></param>
         /// <param name="typeName"></param>
         /// <returns></returns>
-        public Task<bool> IsExistAsync(string userId, string typeName)
+        public Task<bool> IsExistNameAsync(string userId, string typeName)
         {
             var result = FreeSql.Select<TypeEntity>().AnyAsync(f => f.UserId == userId && f.TypeName == typeName);
+            return result;
+        }
+
+        /// <summary>
+        /// 判断id是否存在
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public Task<bool> IsExistAsync(string id)
+        {
+            var result = FreeSql.Select<TypeEntity>().AnyAsync(o => o.Id == id);
             return result;
         }
     }

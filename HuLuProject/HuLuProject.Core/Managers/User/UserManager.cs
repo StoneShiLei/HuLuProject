@@ -36,10 +36,20 @@ namespace HuLuProject.Core.Managers.User
             var result = await FreeSql
                 .InsertOrUpdate<UserEntity>()
                 .SetSource(entity)
-                .UpdateColumns(u => u.UserName)
-                .UpdateColumns(u => u.PassWord)
+                .UpdateColumns(u => new { u.UserName,u.PassWord })
                 .ExecuteAffrowsAsync();
             return result > 0;
+        }
+
+        /// <summary>
+        /// 获取一条数据
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public Task<UserEntity> GetOneAsync(string userId)
+        {
+            var result = FreeSql.Select<UserEntity>().Where(u => u.Id == userId).ToOneAsync();
+            return result;
         }
 
         /// <summary>

@@ -38,7 +38,7 @@ namespace HuLuProject.Core.Entities.Wfd
         /// <summary>
         /// 导航 菜谱
         /// </summary>
-        [Navigate(nameof(MenuFoodEntity))]
+        [Navigate(ManyToMany = typeof(MenuFoodEntity))]
         public virtual List<MenuEntity> Menus { get; set; }
     }
 }

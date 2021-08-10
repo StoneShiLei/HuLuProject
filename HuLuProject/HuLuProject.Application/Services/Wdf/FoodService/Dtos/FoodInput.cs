@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,18 +15,9 @@ namespace HuLuProject.Application.Services.Wdf.FoodService.Dtos
         public string Id { get; set; }
 
         /// <summary>
-        /// 用户Id
-        /// </summary>
-        public string UserId { get; set; }
-
-        /// <summary>
         /// 食材名称
         /// </summary>
+        [Required]
         public string FoodName { get; set; }
-
-        /// <summary>
-        /// 创建时间
-        /// </summary>
-        public DateTime CreatedTime { get; set; }
     }
 }

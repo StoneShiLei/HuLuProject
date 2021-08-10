@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HuLuProject.Application.Services.Wdf.TypeService.Dtos
+namespace HuLuProject.Application.Services.Wdf.MenuService.Dtos
 {
-    public class TypeInput
+    public class MenuRandomOutPut
     {
         /// <summary>
         /// id
@@ -15,9 +14,18 @@ namespace HuLuProject.Application.Services.Wdf.TypeService.Dtos
         public string Id { get; set; }
 
         /// <summary>
+        /// 用户Id
+        /// </summary>
+        public string UserId { get; set; }
+
+        /// <summary>
+        /// 菜谱名称
+        /// </summary>
+        public string MenuName { get; set; }
+
+        /// <summary>
         /// 分类名称
         /// </summary>
-        [Required]
         public string TypeName { get; set; }
     }
 }
