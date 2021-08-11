@@ -277,11 +277,12 @@
             <param name="include">是否贪婪加载菜谱的type和food</param>
             <returns></returns>
         </member>
-        <member name="M:HuLuProject.Core.Managers.Wfd.MenuManager.AddOrUpdateMenuAsync(HuLuProject.Core.Entities.Wfd.MenuEntity)">
+        <member name="M:HuLuProject.Core.Managers.Wfd.MenuManager.AddOrUpdateMenuAsync(HuLuProject.Core.Entities.Wfd.MenuEntity,System.Collections.Generic.List{System.String})">
             <summary>
             添加菜谱 级联保存
             </summary>
             <param name="entity"></param>
+            <param name="foodIds"></param>
             <returns></returns>
         </member>
         <member name="M:HuLuProject.Core.Managers.Wfd.MenuManager.GetOneAsync(System.String)">

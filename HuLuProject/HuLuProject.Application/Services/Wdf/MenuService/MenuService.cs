@@ -31,24 +31,18 @@ namespace HuLuProject.Application.Services.Wdf.MenuService
         /// <param name="SearchParam">查询条件 Dict[分类id,(出菜数量,List[食材id])]</param>
         /// <returns></returns>
         [HttpPost, Route("menu/random")]
-        public async Task<Dictionary<string, List<MenuRandomOutPut>>> GetRandomMenuList([Required,FromBody] Dictionary<string, KeyValuePair<int,List<string>>> SearchParam)
+        public async Task<List<MenuRandomOutput>> GetRandomMenuList([Required,FromBody] Dictionary<string, KeyValuePair<int,List<string>>> SearchParam)
         {
             var entitys = await menuManager.GetRandomMenuListAsync(UserId, SearchParam);
 
-            var result = new Dictionary<string, List<MenuRandomOutPut>>();
-            entitys.ForEach(e => 
+            var result = entitys.Select(e => new MenuRandomOutput
             {
-                var model = new MenuRandomOutPut
-                {
-                    Id = e.Id,
-                    UserId = e.UserId,
-                    MenuName = e.MenuName,
-                    TypeName = e.Type.TypeName
-                };
-                var typeName = e.Type.TypeName;
-                if (!result.ContainsKey(typeName)) result.Add(typeName, new List<MenuRandomOutPut> { model });
-                else result[typeName].Add(model);
-            });
+                Id = e.Id,
+                UserId = e.UserId,
+                MenuName = e.MenuName,
+                TypeName = e.Type.TypeName,
+                TypeId = e.TypeId
+            }).ToList();
 
             return result;
         }
@@ -104,17 +98,6 @@ namespace HuLuProject.Application.Services.Wdf.MenuService
         [HttpPost, Route("menu/addOrUpdate")]
         public async Task<bool> AddOrUpdateMenu([Required, FromBody] MenuInput input)
         {
-            //if (await menuManager.IsExistNameAsync(UserId, input.MenuName))
-            //{
-            //    UnifyContext.Fill(new { Message = "已存在同名菜谱" });
-            //    return false;
-            //}
-
-            var foods = input.FoodIds.Select(id => new FoodEntity
-            {
-                Id = id,
-                UserId = UserId
-            }).ToList();
 
             //如果id为空 或 id不存在 则新建id  防止id格式非法
             if (string.IsNullOrWhiteSpace(input.Id) || !await menuManager.IsExistAsync(input.Id))
@@ -122,16 +105,15 @@ namespace HuLuProject.Application.Services.Wdf.MenuService
                 input.Id = $"MEU-{IDGen.NextID(new { LittleEndianBinary16Format = true, TimeNow = DateTimeOffset.UtcNow })}";
             }
 
-            var entiy = new MenuEntity
+            var entity = new MenuEntity
             {
                 Id = input.Id,
                 UserId = UserId,
                 MenuName = input.MenuName,
                 TypeId = input.TypeId,
-                Foods = foods,
                 CreatedTime = DateTime.UtcNow
             };
-            var result = await menuManager.AddOrUpdateMenuAsync(entiy);
+            var result = await menuManager.AddOrUpdateMenuAsync(entity,input.FoodIds);
             return result;
         }
 

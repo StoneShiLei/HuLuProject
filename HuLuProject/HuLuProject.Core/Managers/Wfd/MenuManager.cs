@@ -31,49 +31,34 @@ namespace HuLuProject.Core.Managers.Wfd
                 string typeId = kv.Key;
                 var (count, foodIds) = kv.Value;
                 //该用户 某分类下包含某些食材的菜谱
-                Expression<Func<MenuEntity, bool>> where = m => m.UserId == userId && m.TypeId == typeId && m.Foods.AsSelect().Any(f => foodIds.Contains(f.Id));
+                Expression<Func<MenuEntity, bool>> where = m => m.UserId == userId && m.TypeId == typeId;
+                if (foodIds != null && foodIds.Any()) where = where.And(m => m.Foods.AsSelect().Any(f => foodIds.Contains(f.Id))); //如果foodIds不为空则查询包含food的菜谱
 
                 //如果请求的数量大于等于符合条件的菜谱数量,则直接返回全部符合条件的结果
                 var menuCount = FreeSql.Select<MenuEntity>().Where(where).Count();
                 if(count >= menuCount)
                 {
-                    var menus = await FreeSql.Select<MenuEntity>().Where(where).ToListAsync();
+                    var menus = await FreeSql.Select<MenuEntity>()
+                        .Where(where)
+                        .Include(m => m.Type)
+                        .ToListAsync();
                     result.AddRange(menus);
                     continue;
                 }
 
-                //添加一个时限，防止死循环
-                var startTime = DateTime.UtcNow;
-                var endTime = startTime.AddSeconds(3); //3秒超时
-                List<MenuEntity> randomList = new();
-                while (randomList.Count < count || startTime > endTime)
+                //取出全部符合条件的菜谱的id 然后随机取出count的数量  查询出完整结果返回
+                var menuIds = await FreeSql.Select<MenuEntity>().Where(where).ToListAsync(m => m.Id);
+                List<string> randomIds = new();
+                Random rm = new();
+                for(int i=0;i<count;i++)
                 {
-                    var result11 = await FreeSql.Select<MenuEntity>().WithSql(@"SELECT 
-                        t1.id,
-                        t1.userId,
-                        t1.typeId,
-                        t1.menuName,
-                        t3.typeName
-                        FROM `wfd_menu` AS t1 JOIN 
-                        (SELECT ROUND(RAND() * ((SELECT MAX(id) FROM `wfd_menu`)-(SELECT MIN(id) FROM `wfd_menu`))+(SELECT MIN(id) FROM `wfd_menu`)) AS id) AS t2
-                        LEFT JOIN `wfd_type` AS t3 ON t1.typeId = t3.id 
-                        WHERE t1.id >= t2.id AND 
-                        ORDER BY t1.id LIMIT 1").Where(where).ToOneAsync();
-
-                    //随机取1条数据（优化性能） 贪婪加载type
-                    var randomMenu = await FreeSql.Select<MenuEntity>().As("t1")
-                        .RawJoin("SELECT ROUND(RAND() * ((SELECT MAX(id) FROM `wfd_menu`)-(SELECT MIN(id) FROM `wfd_menu`))+(SELECT MIN(id) FROM `wfd_menu`)) AS id").As("t2")
-                        .Include(m => m.Type)
-                        .Where("t1.id >= t2.id").Where(where)
-                        .OrderBy("t1.id").Limit(1).ToOneAsync();
-
-                    //如果查询出的数据为重复数据则继续查询
-                    if (randomList.Any(m => string.Equals(m.Id, randomMenu.Id))) continue;
-
-                    randomList.Add(randomMenu);
+                    //生成一个不大于menuIds长度的随机数
+                    int index = rm.Next(menuIds.Count);
+                    randomIds.Add(menuIds[index]);
+                    menuIds.RemoveAt(index);
                 }
-
-                if (randomList.Count < count) throw Oops.Oh("随机出菜发生异常");
+                where = where.And(m => randomIds.Contains(m.Id));
+                var randomList = await FreeSql.Select<MenuEntity>().Where(where).Include(m => m.Type).ToListAsync();
 
                 //加入到结果集
                 result.AddRange(randomList);
@@ -106,15 +91,23 @@ namespace HuLuProject.Core.Managers.Wfd
         /// 添加菜谱 级联保存
         /// </summary>
         /// <param name="entity"></param>
+        /// <param name="foodIds"></param>
         /// <returns></returns>
-        public async Task<bool> AddOrUpdateMenuAsync(MenuEntity entity)
+        public async Task<bool> AddOrUpdateMenuAsync(MenuEntity entity,List<string> foodIds)
         {
             using var uow = FreeSql.CreateUnitOfWork();
-            var repo = FreeSql.GetRepository<MenuEntity>();
-            repo.UnitOfWork = uow;
+            var menuRepo = FreeSql.GetRepository<MenuEntity>();
+            var foodRepo = FreeSql.GetRepository<FoodEntity>();
+            menuRepo.UnitOfWork = uow;
+            foodRepo.UnitOfWork = uow;
 
-            var result = await repo.InsertOrUpdateAsync(entity);
-            await repo.SaveManyAsync(entity, "Foods");
+            //根据foodid查询出该用户的food列表  赋值给菜谱 
+            var foods = await foodRepo.Where(f => f.UserId == entity.UserId && foodIds.Contains(f.Id)).ToListAsync();
+            entity.Foods = foods;
+
+            var result = await menuRepo.InsertOrUpdateAsync(entity);
+            await menuRepo.SaveManyAsync(entity, "Foods");
+
             uow.Commit();
             return result != null;
         }

@@ -241,24 +241,29 @@
             食材id列表
             </summary>
         </member>
-        <member name="P:HuLuProject.Application.Services.Wdf.MenuService.Dtos.MenuRandomOutPut.Id">
+        <member name="P:HuLuProject.Application.Services.Wdf.MenuService.Dtos.MenuRandomOutput.Id">
             <summary>
             id
             </summary>
         </member>
-        <member name="P:HuLuProject.Application.Services.Wdf.MenuService.Dtos.MenuRandomOutPut.UserId">
+        <member name="P:HuLuProject.Application.Services.Wdf.MenuService.Dtos.MenuRandomOutput.UserId">
             <summary>
             用户Id
             </summary>
         </member>
-        <member name="P:HuLuProject.Application.Services.Wdf.MenuService.Dtos.MenuRandomOutPut.MenuName">
+        <member name="P:HuLuProject.Application.Services.Wdf.MenuService.Dtos.MenuRandomOutput.MenuName">
             <summary>
             菜谱名称
             </summary>
         </member>
-        <member name="P:HuLuProject.Application.Services.Wdf.MenuService.Dtos.MenuRandomOutPut.TypeName">
+        <member name="P:HuLuProject.Application.Services.Wdf.MenuService.Dtos.MenuRandomOutput.TypeName">
             <summary>
             分类名称
+            </summary>
+        </member>
+        <member name="P:HuLuProject.Application.Services.Wdf.MenuService.Dtos.MenuRandomOutput.TypeId">
+            <summary>
+            分类id
             </summary>
         </member>
         <member name="T:HuLuProject.Application.Services.Wdf.MenuService.MenuService">

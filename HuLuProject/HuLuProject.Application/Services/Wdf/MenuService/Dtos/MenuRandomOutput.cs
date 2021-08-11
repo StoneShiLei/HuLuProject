@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace HuLuProject.Application.Services.Wdf.MenuService.Dtos
 {
-    public class MenuRandomOutPut
+    public class MenuRandomOutput
     {
         /// <summary>
         /// id
@@ -27,5 +27,10 @@ namespace HuLuProject.Application.Services.Wdf.MenuService.Dtos
         /// 分类名称
         /// </summary>
         public string TypeName { get; set; }
+
+        /// <summary>
+        /// 分类id
+        /// </summary>
+        public string TypeId { get; set; }
     }
 }
