@@ -1,24 +1,11 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png" />
-  <router-view></router-view>
+  <n-config-provider :locale="zhCN" :date-locale="dateZhCN">
+    <n-message-provider>
+      <router-view></router-view>
+    </n-message-provider>
+  </n-config-provider>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
-
-export default defineComponent({
-  name: "App",
-  components: {},
-});
+<script setup lang="ts">
+import { NConfigProvider, zhCN, dateZhCN, NMessageProvider } from "naive-ui";
 </script>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>

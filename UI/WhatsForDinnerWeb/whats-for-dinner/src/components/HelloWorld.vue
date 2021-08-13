@@ -36,26 +36,38 @@
   </p>
 </template>
 
-<script lang="ts">
-import { ref, defineComponent } from "vue";
+<script setup lang="ts">
+import { defineProps } from "vue";
 import { useStore } from "../models/store";
 
-export default defineComponent({
-  name: "HelloWorld",
-  props: {
-    msg: {
-      type: String,
-      required: true,
-    },
-  },
-  setup: () => {
-    const store = useStore();
-    const addCount = () => {
-      store.commit("add");
-    };
-    return { store, addCount };
+const props = defineProps({
+  msg: {
+    type: String,
+    required: true,
   },
 });
+
+const store = useStore();
+const addCount = () => {
+  store.commit("add");
+};
+
+// export default defineComponent({
+//   name: "HelloWorld",
+//   props: {
+//     msg: {
+//       type: String,`
+//       required: true,
+//     },
+//   },
+//   setup: () => {
+//     const store = useStore();
+//     const addCount = () => {
+//       store.commit("add");
+//     };
+//     return { store, addCount };
+//   },
+// });
 </script>
 
 <style scoped>
