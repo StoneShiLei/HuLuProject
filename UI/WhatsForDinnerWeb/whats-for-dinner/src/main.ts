@@ -13,7 +13,7 @@ app.config.globalProperties.$post = post;
 app.mount('#app');
 
 
-//声明类型
+//声明全局函数类型
 declare module '@vue/runtime-core' {
     export interface ComponentCustomProperties {
         $get: typeof get

@@ -20,6 +20,7 @@ export function useStore() {
     return baseUseStore(key)
 }
 
+//添加userInfo
 export const ADD_USERINFO = "ADD_USERINFO";
 
 //创建store
