@@ -5,7 +5,6 @@ import { store, key } from './models/store'
 import { get, post } from './api/http'
 
 const app = createApp(App).use(router).use(store, key);
-
 //挂载全局
 app.config.globalProperties.$get = get;
 app.config.globalProperties.$post = post;

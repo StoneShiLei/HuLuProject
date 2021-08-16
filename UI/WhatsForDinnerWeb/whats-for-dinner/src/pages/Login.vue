@@ -19,11 +19,10 @@
 import { getCurrentInstance, ref } from "vue";
 import url from "../api/url";
 import { useMessage, NForm, NFormItem, NInput, NButton } from "naive-ui";
-import { CallBack } from "../api/http";
 import { useStore } from "vuex";
 
 const com = getCurrentInstance();
-const store = useStore();
+// const store = useStore();
 const formRef = ref<InstanceType<typeof NForm>>();
 const message = useMessage();
 
@@ -37,7 +36,7 @@ function handleLoginClick(event: Event): void {
   formRef.value?.validate((errors) => {
     if (!errors) {
       com?.proxy?.$get<boolean>(url.UserLogin, model.value).then((res) => {
-        if (res.statusCode == 200 && res.succeeded && res.data) {
+        if (res.statusCode == 200 && res.data) {
           message.success("登陆成功");
         } else {
           message.error("登陆失败");
@@ -55,7 +54,7 @@ function handleRegisterClick(event: Event): void {
   formRef.value?.validate((errors) => {
     if (!errors) {
       com?.proxy?.$post<boolean>(url.UserRegister, model.value).then((res) => {
-        if (res.statusCode == 200 && res.succeeded && res.data) {
+        if (res.statusCode == 200 && res.data) {
           message.success("注册成功，请点击登陆");
         } else {
           message.error("注册失败");

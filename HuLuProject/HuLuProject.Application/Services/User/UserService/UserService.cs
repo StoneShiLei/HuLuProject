@@ -114,5 +114,15 @@ namespace HuLuProject.Application.Services.User.UserService
             var result = Mapper.Map<UserOutput>(entity);
             return result;
         }
+
+        /// <summary>
+        /// 用于前端检查用户登陆状态
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet,Route("user/check")]
+        public ValueTask<bool> CheckUserAuth()
+        {
+            return ValueTask.FromResult(true);
+        }
     }
 }
