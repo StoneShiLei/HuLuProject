@@ -30,13 +30,13 @@ namespace HuLuProject.Application.Services.User.UserService
         /// 登陆
         /// </summary>
         /// <param name="userName"></param>
-        /// <param name="passWord"></param>
+        /// <param name="password"></param>
         /// <returns></returns>
         [HttpGet, Route("user/login"), AllowAnonymous]
-        public async ValueTask<bool> Login([Required]string userName, [Required]string passWord)
+        public async ValueTask<bool> Login([Required]string userName, [Required]string password)
         {
-            passWord = DESCEncryption.Encrypt(passWord,AesKey);
-            var user = await userManager.CheckUserAsync(userName, passWord);
+            password = DESCEncryption.Encrypt(password,AesKey);
+            var user = await userManager.CheckUserAsync(userName, password);
             if (user == null) return false;
 
             var payload = new Dictionary<string, object>()
