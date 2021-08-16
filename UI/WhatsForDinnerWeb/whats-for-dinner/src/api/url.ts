@@ -1,10 +1,5 @@
-interface UrlConfig {
-    UserLogin: string
-}
 
-
-const url: UrlConfig = {
+export default {
     UserLogin: "/user/login",
+    UserRegister: "/user/register",
 };
-
-export default url;

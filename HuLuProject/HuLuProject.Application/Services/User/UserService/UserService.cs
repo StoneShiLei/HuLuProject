@@ -41,7 +41,7 @@ namespace HuLuProject.Application.Services.User.UserService
 
             var payload = new Dictionary<string, object>()
             {
-                { "UserId",user.Id},{ "UserName",user.UserName }
+                { "userId",user.Id},{ "userName",user.UserName }
             };
             var accessToken = JWTEncryption.Encrypt(payload);
             var refreshToken = JWTEncryption.GenerateRefreshToken(accessToken, 43200);

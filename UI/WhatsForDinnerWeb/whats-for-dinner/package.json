@@ -9,7 +9,6 @@
   "dependencies": {
     "@vue/compiler-sfc": "^3.2.0",
     "axios": "^0.21.1",
-    "jsonwebtoken": "^8.5.1",
     "vue": "^3.2.0",
     "vue-router": "^4.0.10",
     "vuex": "^4.0.2",

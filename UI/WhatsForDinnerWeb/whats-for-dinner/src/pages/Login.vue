@@ -10,6 +10,7 @@
         type="password"
       />
     </n-form-item>
+    <n-button @click="handleRegisterClick" attr-type="button">注册</n-button>
     <n-button @click="handleLoginClick" attr-type="button">登陆</n-button>
   </n-form>
 </template>
@@ -19,8 +20,10 @@ import { getCurrentInstance, ref } from "vue";
 import url from "../api/url";
 import { useMessage, NForm, NFormItem, NInput, NButton } from "naive-ui";
 import { CallBack } from "../api/http";
+import { useStore } from "vuex";
 
 const com = getCurrentInstance();
+const store = useStore();
 const formRef = ref<InstanceType<typeof NForm>>();
 const message = useMessage();
 
@@ -35,11 +38,11 @@ function handleLoginClick(event: Event): void {
     if (!errors) {
       com?.proxy?.$get<boolean>(url.UserLogin, model.value).then((res) => {
         if (res.statusCode == 200 && res.succeeded && res.data) {
-          message.success("ok");
+          message.success("登陆成功");
         } else {
-          message.error("not ok");
+          message.error("登陆失败");
+          console.log(res);
         }
-        console.log(res);
       });
     } else {
       message.error(errors[0][0].message);
@@ -47,6 +50,25 @@ function handleLoginClick(event: Event): void {
   });
 }
 
+//注册
+function handleRegisterClick(event: Event): void {
+  formRef.value?.validate((errors) => {
+    if (!errors) {
+      com?.proxy?.$post<boolean>(url.UserRegister, model.value).then((res) => {
+        if (res.statusCode == 200 && res.succeeded && res.data) {
+          message.success("注册成功，请点击登陆");
+        } else {
+          message.error("注册失败");
+          console.log(res);
+        }
+      });
+    } else {
+      message.error(errors[0][0].message);
+    }
+  });
+}
+
+//表单验证规则
 const rules = {
   userName: {
     required: true,
