@@ -19,10 +19,8 @@
 import { getCurrentInstance, ref } from "vue";
 import url from "../api/url";
 import { useMessage, NForm, NFormItem, NInput, NButton } from "naive-ui";
-import { useStore } from "vuex";
 
 const com = getCurrentInstance();
-// const store = useStore();
 const formRef = ref<InstanceType<typeof NForm>>();
 const message = useMessage();
 
@@ -35,14 +33,23 @@ const model = ref({
 function handleLoginClick(event: Event): void {
   formRef.value?.validate((errors) => {
     if (!errors) {
-      com?.proxy?.$get<boolean>(url.UserLogin, model.value).then((res) => {
-        if (res.statusCode == 200 && res.data) {
-          message.success("登陆成功");
-        } else {
-          message.error("登陆失败");
-          console.log(res);
-        }
-      });
+      com?.proxy
+        ?.$get<boolean>(url.UserLogin, model.value)
+        .then((res) => {
+          if (res.statusCode == 200 && res.data) {
+            message.success("登陆成功");
+            com.proxy?.$router.push({ path: "/index" });
+          } else if (res.statusCode == 200 && !res.data) {
+            message.error(res.extras.message);
+          } else {
+            message.error("登陆失败，系统异常");
+            console.log(res);
+          }
+        })
+        .catch((err) => {
+          message.error("登陆失败，系统异常");
+          console.log(err);
+        });
     } else {
       message.error(errors[0][0].message);
     }
@@ -53,14 +60,22 @@ function handleLoginClick(event: Event): void {
 function handleRegisterClick(event: Event): void {
   formRef.value?.validate((errors) => {
     if (!errors) {
-      com?.proxy?.$post<boolean>(url.UserRegister, model.value).then((res) => {
-        if (res.statusCode == 200 && res.data) {
-          message.success("注册成功，请点击登陆");
-        } else {
-          message.error("注册失败");
-          console.log(res);
-        }
-      });
+      com?.proxy
+        ?.$post<boolean>(url.UserRegister, model.value)
+        .then((res) => {
+          if (res.statusCode == 200 && res.data) {
+            message.success("注册成功，请点击登陆");
+          } else if (res.statusCode == 200 && !res.data) {
+            message.error(res.extras.message);
+          } else {
+            message.error("注册失败");
+            console.log(res);
+          }
+        })
+        .then((err) => {
+          message.error("注册失败，系统异常");
+          console.log(err);
+        });
     } else {
       message.error(errors[0][0].message);
     }

@@ -1,7 +1,6 @@
 ﻿using Furion;
 using Furion.Cache;
 using Furion.DynamicApiController;
-using HuLuProject.Application.Utils;
 using MapsterMapper;
 using Microsoft.Extensions.Caching.Memory;
 using System;

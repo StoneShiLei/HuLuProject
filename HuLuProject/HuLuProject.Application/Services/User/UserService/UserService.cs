@@ -37,7 +37,11 @@ namespace HuLuProject.Application.Services.User.UserService
         {
             password = DESCEncryption.Encrypt(password,AesKey);
             var user = await userManager.CheckUserAsync(userName, password);
-            if (user == null) return false;
+            if (user == null) 
+            {
+                UnifyContext.Fill(new { Message = "用户名或密码错误" });
+                return false;
+            }
 
             var payload = new Dictionary<string, object>()
             {

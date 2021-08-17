@@ -1,12 +1,12 @@
 import { get } from "../api/http";
 import url from "../api/url";
 
-export function checkUserAuth(): boolean {
-    get<boolean>(url.UserAuth, {}).then((res) => {
-        return res.statusCode == 200;
+export async function checkUserAuth(): Promise<boolean> {
+    let isAuthed = false;
+    await get<boolean>(url.UserAuth, {}).then((res) => {
+        isAuthed = res.statusCode == 200
     }).catch((err) => {
-        return false;
+        isAuthed = false;
     })
-
-    return false;
+    return isAuthed;
 }

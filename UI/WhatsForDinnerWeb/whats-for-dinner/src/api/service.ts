@@ -30,7 +30,7 @@ service.interceptors.request.use(
 //响应拦截
 service.interceptors.response.use(
     config => {
-        if (!config.data?.succeeded) Promise.reject(config);
+        if (!config.data?.succeeded) return Promise.reject(config);
 
         const token: string = config.headers["access-token"];
         const rToken: string = config.headers["x-access-token"];
@@ -50,10 +50,14 @@ service.interceptors.response.use(
         return config;
     },
     err => {
-        if (err.response.data.statusCode == 401) {
+        if (!err.response.data) {
+            return Promise.reject(err.response.data);
+        } else if (err.response.data.statusCode == 401) {
             store.commit(REMOVE_USERAUTH)
         } else if (err.response.data.statusCode == 500) {
             return Promise.reject(err.response.data)
+        } else if (!err.response.data.succeeded) {
+            return Promise.reject(err.response.data);
         } else {
             return Promise.reject(err.response.data);
         }

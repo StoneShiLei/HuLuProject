@@ -64,7 +64,7 @@
             登陆
             </summary>
             <param name="userName"></param>
-            <param name="passWord"></param>
+            <param name="password"></param>
             <returns></returns>
         </member>
         <member name="M:HuLuProject.Application.Services.User.UserService.UserService.Register(HuLuProject.Application.Services.User.UserService.Dtos.UserRegisterInput)">
@@ -86,6 +86,12 @@
             查询一条数据
             </summary>
             <param name="userId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HuLuProject.Application.Services.User.UserService.UserService.CheckUserAuth">
+            <summary>
+            用于前端检查用户登陆状态
+            </summary>
             <returns></returns>
         </member>
         <member name="P:HuLuProject.Application.Services.Wdf.FoodService.Dtos.FoodDeleteInput.FoodId">
@@ -378,13 +384,6 @@
             删除分类
             </summary>
             <param name="input"></param>
-            <returns></returns>
-        </member>
-        <member name="M:HuLuProject.Application.Utils.JwtHelper.GetPayloads(Microsoft.AspNetCore.Http.HttpContext)">
-            <summary>
-            获取jwt的负载
-            </summary>
-            <param name="context"></param>
             <returns></returns>
         </member>
     </members>
