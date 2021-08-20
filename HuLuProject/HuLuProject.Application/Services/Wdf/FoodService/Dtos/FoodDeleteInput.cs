@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -13,6 +14,7 @@ namespace HuLuProject.Application.Services.Wdf.FoodService.Dtos
         /// id
         /// </summary>
         [Required]
+        [JsonProperty("foodId")]
         public string FoodId { get; set; }
     }
 }

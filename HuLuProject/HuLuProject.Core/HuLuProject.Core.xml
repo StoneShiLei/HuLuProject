@@ -335,6 +335,7 @@
             <param name="userId"></param>
             <param name="searchText">搜索关键字</param>
             <param name="include">是否贪婪加载type下的菜谱</param>
+            <param name=""></param>
             <returns></returns>
         </member>
         <member name="M:HuLuProject.Core.Managers.Wfd.TypeManager.AddOrUpdateTypeAsync(HuLuProject.Core.Entities.Wfd.TypeEntity)">
@@ -388,6 +389,11 @@
         <member name="P:HuLuProject.Core.Universal.Container`1.Items">
             <summary>
             分页列表
+            </summary>
+        </member>
+        <member name="P:HuLuProject.Core.View.V_Type.MenuCount">
+            <summary>
+            分类下的菜单统计数量
             </summary>
         </member>
     </members>

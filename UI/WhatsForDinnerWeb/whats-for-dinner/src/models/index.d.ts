@@ -1,9 +1,10 @@
 
 interface TypeModel {
-    id: string,
-    userId: string,
+    id?: string,
+    userId?: string,
     typeName: string,
-    menuCount: string
+    menuCount?: string,
+    menus?: MenuModel[]
 }
 
 interface FoodModel {
@@ -17,5 +18,7 @@ interface MenuModel {
     userId: string,
     menuName: string,
     typeName: string,
-    foodNames: string
+    typeId: string,
+    foodNames: string,
+    foodIds: string[]
 }

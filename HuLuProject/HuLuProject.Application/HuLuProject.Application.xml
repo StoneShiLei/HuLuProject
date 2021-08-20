@@ -355,6 +355,11 @@
             分类名称
             </summary>
         </member>
+        <member name="P:HuLuProject.Application.Services.Wdf.TypeService.Dtos.TypeOutput.MenuCount">
+            <summary>
+            该分类下的菜谱数量
+            </summary>
+        </member>
         <member name="P:HuLuProject.Application.Services.Wdf.TypeService.Dtos.TypeOutput.CreatedTime">
             <summary>
             创建时间
@@ -370,7 +375,7 @@
             分类接口
             </summary>
         </member>
-        <member name="M:HuLuProject.Application.Services.Wdf.TypeService.TypeService.GetTypeList(System.String,System.Boolean)">
+        <member name="M:HuLuProject.Application.Services.Wdf.TypeService.TypeService.GetTypeList(System.String)">
             <summary>
             根据关键字获取分类列表 为空返回全部
             </summary>

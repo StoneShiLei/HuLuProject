@@ -2,7 +2,7 @@
     <van-nav-bar
         title="分类"
         right-text="新增"
-        @click-right="handleNavBarClick"
+        @click-right="handleAddShow"
         :border="true"
         safe-area-inset-top
     />
@@ -13,37 +13,79 @@
         finished-text="没有更多了"
         @load="handleLoadEvevt"
     >
-        <van-swipe-cell v-for="item in list" :key="item.id" :title="item.typeName">
+        <van-swipe-cell
+            v-for="item in list"
+            :key="item.id"
+            :title="item.typeName"
+            :before-close="handleClose"
+            ref="swipeCellRef"
+        >
             <template #right>
-                <van-button square type="primary">修改</van-button>
+                <van-button square type="primary" style="height: 100%;">修改</van-button>
             </template>
-            <van-cell :border="true" :title="item.typeName" :value="`${item.menuCount}个菜谱`" />
+            <van-cell :title="item.typeName" :value="`${item.menuCount}个菜谱`" :border="true" center>
+                <template #label>{{ item.menus?.map((item) => { return item.menuName }).join(',') }}</template>
+            </van-cell>
             <template #left>
-                <van-button square type="danger">删除</van-button>
+                <van-button square type="danger" style="height: 100%;">删除</van-button>
             </template>
         </van-swipe-cell>
     </van-list>
+
+    <van-popup v-model:show="addShow" position="top" :style="{ height: '20%' }">
+        <van-form validate-trigger="onBlur" ref="formRef" style="padding-top:50px;">
+            <van-field
+                v-model="model.typeName"
+                name="名称"
+                label="名称"
+                placeholder="名称"
+                :rules="[{ required: true, message: '请填写名称' }]"
+                :border="true"
+                center
+            >
+                <template #button>
+                    <van-button
+                        size="small"
+                        type="primary"
+                        native-type="button"
+                        @click="handleAddOrUpdateClick"
+                    >添加</van-button>
+                </template>
+            </van-field>
+        </van-form>
+    </van-popup>
 </template>
   
 <script setup lang="ts">
 import url from "../api/url";
 import { useHttp } from "../api/http";
 import { ref } from "vue";
-import { Notify } from "vant";
+import { Dialog, FormInstance, Notify, SwipeCellInstance } from "vant";
 
+const swipeCellRef = ref<SwipeCellInstance>();
+const formRef = ref<FormInstance>();
 const http = useHttp();
+
+const addShow = ref(false);
 
 const isLoading = ref(false);
 const isFinished = ref(false);
 const list = ref<TypeModel[]>([])
 
+let model = ref<TypeModel>(
+    {
+        typeName: '',
+    }
+)
+
+//列表数据加载
 function handleLoadEvevt() {
     http
         .get<TypeModel[]>(url.TypeList, {})
         .then((res) => {
             if (res.statusCode == 200 && res.data) {
                 list.value = res.data;
-                console.log(res.data)
+
                 isLoading.value = false;
                 isFinished.value = true;
             } else if (res.statusCode == 200 && !res.data) {
@@ -59,8 +101,55 @@ function handleLoadEvevt() {
         });
 }
 
-function handleNavBarClick() {
+//显示新增遮罩  初始化model
+function handleAddShow() {
+    model.value = {
+        typeName: '',
+    };
+    addShow.value = true;
+}
 
+//滑动关闭
+function handleClose(event: { name: string, position: 'left' | 'right' | 'cell' | 'outside' }): Promise<boolean> {
+    switch (event.position) {
+        case 'left':
+            return new Promise((resolve) => {
+                console.log(resolve)
+                Dialog.confirm({
+                    title: '确定删除吗？',
+                })
+                    .then((resolve) => { return true })
+                    .catch((err) => { return true });
+            });
+        default:
+            return new Promise(() => {
+                return true
+            });
+    }
+}
+
+//提交新增或修改
+function handleAddOrUpdateClick() {
+    formRef.value?.validate()
+        .then(() => {
+            http
+                .post<boolean>(url.TypeAddOrUpdate, model)
+                .then((res) => {
+                    if (res.statusCode == 200 && res.data) {
+                        Notify({ type: "success", message: "操作成功" });
+                    } else if (res.statusCode == 200 && !res.data) {
+                        Notify({ type: "danger", message: res.extras.message });
+                    } else {
+                        Notify({ type: "danger", message: "操作失败，系统异常" });
+                        console.error(res);
+                    }
+                })
+                .catch((err) => {
+                    Notify({ type: "danger", message: "操作失败，系统异常" });
+                    console.error(err);
+                });
+        })
+        .catch((err) => { console.log(err) })
 }
 
 </script>
