@@ -2,7 +2,8 @@
 interface TypeModel {
     id: string,
     userId: string,
-    typeName: string
+    typeName: string,
+    menuCount: string
 }
 
 interface FoodModel {

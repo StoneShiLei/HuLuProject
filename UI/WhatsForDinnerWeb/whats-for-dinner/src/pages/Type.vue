@@ -17,7 +17,7 @@
             <template #right>
                 <van-button square type="primary">修改</van-button>
             </template>
-            <van-cell :border="true" :title="item.typeName" />
+            <van-cell :border="true" :title="item.typeName" :value="`${item.menuCount}个菜谱`" />
             <template #left>
                 <van-button square type="danger">删除</van-button>
             </template>

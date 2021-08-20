@@ -1,4 +1,5 @@
 ﻿using HuLuProject.Core.Entities.Wfd;
+using HuLuProject.Core.View;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,8 +19,9 @@ namespace HuLuProject.Core.Managers.Wfd
         /// <param name="userId"></param>
         /// <param name="searchText">搜索关键字</param>
         /// <param name="include">是否贪婪加载type下的菜谱</param>
+        /// <param name=""></param>
         /// <returns></returns>
-        public async Task<List<TypeEntity>> GetTypeListAsync(string userId,string searchText = "",bool include = false,out long count)
+        public Task<List<V_Type>> GetTypeListAsync(string userId,string searchText = "", bool include = false)
         {
             Expression<Func<TypeEntity, bool>> where = t => t.UserId == userId;
 
@@ -28,8 +30,15 @@ namespace HuLuProject.Core.Managers.Wfd
             var select = FreeSql.Select<TypeEntity>().Where(where).OrderByDescending(t => t.CreatedTime);
             if (include) select.IncludeMany(t => t.Menus);
 
-            var result = await select.ToListAsync();
-            count = await FreeSql.Select<MenuEntity>().Where(m => m.UserId == userId).CountAsync();
+            var result = select.ToListAsync(t => new V_Type 
+            {
+                Id = t.Id,
+                Menus = t.Menus,
+                TypeName = t.TypeName,
+                UserId = t.UserId,
+                CreatedTime = t.CreatedTime,
+                MenuCount = FreeSql.Select<MenuEntity>().Where(m => m.TypeId == t.Id).Count()
+            });
 
             return result;
         }

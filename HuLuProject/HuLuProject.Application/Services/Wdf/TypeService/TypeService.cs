@@ -31,9 +31,9 @@ namespace HuLuProject.Application.Services.Wdf.TypeService
         /// <param name="include">是否获取分类下的食谱</param>
         /// <returns></returns>
         [HttpGet, Route("type/list")]
-        public async Task<List<TypeOutput>> GetTypeList(string text = "",bool include = false)
+        public async Task<List<TypeOutput>> GetTypeList(string text = "")
         {
-            var entitys = await typeManager.GetTypeListAsync(UserId, text, include,out long count);
+            var entitys = await typeManager.GetTypeListAsync(UserId, text, true);
             var result = entitys.Select(e => 
             {
                return new TypeOutput
@@ -42,7 +42,7 @@ namespace HuLuProject.Application.Services.Wdf.TypeService
                     TypeName = e.TypeName,
                     UserId = e.UserId,
                     Menus = Mapper.Map<List<MenuOutput>>(e.Menus),
-                    MenuCount = count,
+                    MenuCount = e.MenuCount,
                     CreatedTime = e.CreatedTime,
                 };
             }).ToList();
