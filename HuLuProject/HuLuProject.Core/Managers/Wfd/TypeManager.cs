@@ -19,7 +19,7 @@ namespace HuLuProject.Core.Managers.Wfd
         /// <param name="searchText">搜索关键字</param>
         /// <param name="include">是否贪婪加载type下的菜谱</param>
         /// <returns></returns>
-        public Task<List<TypeEntity>> GetTypeListAsync(string userId,string searchText = "",bool include = false)
+        public async Task<List<TypeEntity>> GetTypeListAsync(string userId,string searchText = "",bool include = false,out long count)
         {
             Expression<Func<TypeEntity, bool>> where = t => t.UserId == userId;
 
@@ -28,7 +28,9 @@ namespace HuLuProject.Core.Managers.Wfd
             var select = FreeSql.Select<TypeEntity>().Where(where).OrderByDescending(t => t.CreatedTime);
             if (include) select.IncludeMany(t => t.Menus);
 
-            var result = select.ToListAsync();
+            var result = await select.ToListAsync();
+            count = await FreeSql.Select<MenuEntity>().Where(m => m.UserId == userId).CountAsync();
+
             return result;
         }
 

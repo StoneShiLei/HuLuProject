@@ -13,11 +13,15 @@
         finished-text="没有更多了"
         @load="handleLoadEvevt"
     >
-        <van-cell center v-for="item in list" :key="item.id" :title="item.typeName">
-            <template v-slot:value>
-                <van-button>修改</van-button>
+        <van-swipe-cell v-for="item in list" :key="item.id" :title="item.typeName">
+            <template #right>
+                <van-button square type="primary">修改</van-button>
             </template>
-        </van-cell>
+            <van-cell :border="true" :title="item.typeName" />
+            <template #left>
+                <van-button square type="danger">删除</van-button>
+            </template>
+        </van-swipe-cell>
     </van-list>
 </template>
   

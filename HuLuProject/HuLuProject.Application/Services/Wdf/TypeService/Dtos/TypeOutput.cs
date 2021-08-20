@@ -25,6 +25,11 @@ namespace HuLuProject.Application.Services.Wdf.TypeService.Dtos
         public string TypeName { get; set; }
 
         /// <summary>
+        /// 该分类下的菜谱数量
+        /// </summary>
+        public long MenuCount { get; set; }
+
+        /// <summary>
         /// 创建时间
         /// </summary>
         public DateTime CreatedTime { get; set; }

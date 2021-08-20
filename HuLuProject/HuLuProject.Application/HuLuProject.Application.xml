@@ -310,6 +310,14 @@
             <param name="input"></param>
             <returns></returns>
         </member>
+        <member name="M:HuLuProject.Application.Services.Wdf.MenuService.MenuService.EnableMenu(System.Boolean,System.String)">
+            <summary>
+            修改菜谱启用状态
+            </summary>
+            <param name="state">开启状态</param>
+            <param name="menuId"></param>
+            <returns></returns>
+        </member>
         <member name="M:HuLuProject.Application.Services.Wdf.MenuService.MenuService.RemoveMenu(HuLuProject.Application.Services.Wdf.MenuService.Dtos.MenuDeleteInput)">
             <summary>
             删除菜谱

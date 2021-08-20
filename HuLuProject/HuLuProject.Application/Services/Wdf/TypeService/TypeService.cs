@@ -2,6 +2,7 @@
 using Furion.DistributedIDGenerator;
 using Furion.FriendlyException;
 using Furion.UnifyResult;
+using HuLuProject.Application.Services.Wdf.MenuService.Dtos;
 using HuLuProject.Application.Services.Wdf.TypeService.Dtos;
 using HuLuProject.Core.Entities.Wfd;
 using HuLuProject.Core.Managers.Wfd;
@@ -32,8 +33,19 @@ namespace HuLuProject.Application.Services.Wdf.TypeService
         [HttpGet, Route("type/list")]
         public async Task<List<TypeOutput>> GetTypeList(string text = "",bool include = false)
         {
-            var entitys = await typeManager.GetTypeListAsync(UserId, text, include);
-            var result = Mapper.Map<List<TypeOutput>>(entitys);
+            var entitys = await typeManager.GetTypeListAsync(UserId, text, include,out long count);
+            var result = entitys.Select(e => 
+            {
+               return new TypeOutput
+                {
+                    Id = e.Id,
+                    TypeName = e.TypeName,
+                    UserId = e.UserId,
+                    Menus = Mapper.Map<List<MenuOutput>>(e.Menus),
+                    MenuCount = count,
+                    CreatedTime = e.CreatedTime,
+                };
+            }).ToList();
             return result;
         }
 
