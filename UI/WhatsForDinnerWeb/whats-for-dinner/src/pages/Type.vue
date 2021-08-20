@@ -16,6 +16,7 @@
         <van-swipe-cell
             v-for="item in list"
             :key="item.id"
+            :name="item.id"
             :title="item.typeName"
             :before-close="handleClose"
             ref="swipeCellRef"
@@ -32,7 +33,7 @@
         </van-swipe-cell>
     </van-list>
 
-    <van-popup v-model:show="addShow" position="top" :style="{ height: '20%' }">
+    <van-popup v-model:show="show" position="top" :style="{ height: '20%' }">
         <van-form validate-trigger="onBlur" ref="formRef" style="padding-top:50px;">
             <van-field
                 v-model="model.typeName"
@@ -49,7 +50,7 @@
                         type="primary"
                         native-type="button"
                         @click="handleAddOrUpdateClick"
-                    >添加</van-button>
+                    >确定</van-button>
                 </template>
             </van-field>
         </van-form>
@@ -59,14 +60,14 @@
 <script setup lang="ts">
 import url from "../api/url";
 import { useHttp } from "../api/http";
-import { ref } from "vue";
+import { ref, resolveComponent } from "vue";
 import { Dialog, FormInstance, Notify, SwipeCellInstance } from "vant";
 
 const swipeCellRef = ref<SwipeCellInstance>();
 const formRef = ref<FormInstance>();
 const http = useHttp();
 
-const addShow = ref(false);
+const show = ref(false);
 
 const isLoading = ref(false);
 const isFinished = ref(false);
@@ -106,25 +107,62 @@ function handleAddShow() {
     model.value = {
         typeName: '',
     };
-    addShow.value = true;
+    show.value = true;
 }
 
 //滑动关闭
-function handleClose(event: { name: string, position: 'left' | 'right' | 'cell' | 'outside' }): Promise<boolean> {
+function handleClose(event: { name: string, position: 'left' | 'right' | 'cell' | 'outside' }) {
     switch (event.position) {
         case 'left':
             return new Promise((resolve) => {
-                console.log(resolve)
                 Dialog.confirm({
                     title: '确定删除吗？',
                 })
-                    .then((resolve) => { return true })
-                    .catch((err) => { return true });
+                    .then(() => {
+                        http
+                            .post<boolean>(url.TypeRemove, { typeId: event.name })
+                            .then((res) => {
+                                if (res.statusCode == 200 && res.data) {
+                                    Notify({ type: "success", message: "操作成功" });
+                                    handleLoadEvevt()
+                                } else if (res.statusCode == 200 && !res.data) {
+                                    Notify({ type: "danger", message: res.extras.message });
+                                } else {
+                                    Notify({ type: "danger", message: "操作失败，系统异常" });
+                                    console.error(res);
+                                }
+                            })
+                            .catch((err) => {
+                                Notify({ type: "danger", message: "操作失败，系统异常" });
+                                console.error(err);
+                            });
+                        return new Promise(resolve)
+                    })
+                    .catch(resolve);
             });
+        case 'right':
+            return new Promise((resolve) => {
+                http
+                    .get<TypeModel>(url.TypeInfo, { typeId: event.name })
+                    .then((res) => {
+                        if (res.statusCode == 200 && res.data) {
+                            model.value = res.data
+                        } else if (res.statusCode == 200 && !res.data) {
+                            Notify({ type: "danger", message: res.extras.message });
+                        } else {
+                            Notify({ type: "danger", message: "操作失败，系统异常" });
+                            console.error(res);
+                        }
+                    })
+                    .catch((err) => {
+                        Notify({ type: "danger", message: "操作失败，系统异常" });
+                        console.error(err);
+                    });
+                show.value = true;
+                return new Promise(resolve)
+            })
         default:
-            return new Promise(() => {
-                return true
-            });
+            break;
     }
 }
 
@@ -132,11 +170,14 @@ function handleClose(event: { name: string, position: 'left' | 'right' | 'cell' 
 function handleAddOrUpdateClick() {
     formRef.value?.validate()
         .then(() => {
+            console.log(model.value)
             http
-                .post<boolean>(url.TypeAddOrUpdate, model)
+                .post<boolean>(url.TypeAddOrUpdate, model.value)
                 .then((res) => {
                     if (res.statusCode == 200 && res.data) {
                         Notify({ type: "success", message: "操作成功" });
+                        show.value = false;
+                        handleLoadEvevt()
                     } else if (res.statusCode == 200 && !res.data) {
                         Notify({ type: "danger", message: res.extras.message });
                     } else {

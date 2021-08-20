@@ -6,4 +6,5 @@ export default {
     TypeList: "/type/list",
     TypeInfo: "/type/get",
     TypeAddOrUpdate: "/type/addOrUpdate",
+    TypeRemove: "/type/remove",
 };

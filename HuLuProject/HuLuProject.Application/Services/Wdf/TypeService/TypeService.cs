@@ -70,6 +70,10 @@ namespace HuLuProject.Application.Services.Wdf.TypeService
         [HttpPost, Route("type/addOrUpdate")]
         public async Task<bool> AddOrUpdateType([Required, FromBody] TypeInput input)
         {
+            //如果修改的名称与原名称一致则直接返回
+            var entity = await typeManager.GetOneAsync(input.Id);
+            if (string.Equals(input.TypeName, entity?.TypeName)) return true;
+
             if (await typeManager.IsExistNameAsync(UserId, input.TypeName))
             {
                 UnifyContext.Fill(new { Message = "已存在同名分类" });

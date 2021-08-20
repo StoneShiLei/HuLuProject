@@ -57,6 +57,10 @@ namespace HuLuProject.Application.Services.Wdf.FoodService
         [HttpPost, Route("food/addOrUpdate")]
         public async Task<bool> AddOrUpdateFood([Required,FromBody]FoodInput input)
         {
+            //如果修改的名称与原名称一致则直接返回
+            var entity = await foodManager.GetOneAsync(input.Id);
+            if (string.Equals(input.FoodName, entity?.FoodName)) return true;
+
             if(await foodManager.IsExistNameAsync(UserId,input.FoodName))
             {
                 UnifyContext.Fill(new { Message = "已存在同名食材" });
