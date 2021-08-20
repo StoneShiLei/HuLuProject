@@ -217,6 +217,11 @@
             食材名称 顿号隔开
             </summary>
         </member>
+        <member name="P:HuLuProject.Application.Services.Wdf.MenuService.Dtos.MenuListOutput.IsEnabled">
+            <summary>
+            是否启用
+            </summary>
+        </member>
         <member name="P:HuLuProject.Application.Services.Wdf.MenuService.Dtos.MenuListOutput.CreatedTime">
             <summary>
             创建时间

@@ -120,6 +120,19 @@ namespace HuLuProject.Application.Services.Wdf.MenuService
         }
 
         /// <summary>
+        /// 修改菜谱启用状态
+        /// </summary>
+        /// <param name="state">开启状态</param>
+        /// <param name="menuId"></param>
+        /// <returns></returns>
+        [HttpGet, Route("menu/addOrUpdate")]
+        public async Task<bool> EnableMenu([Required] bool state,[Required]string menuId)
+        {
+            var result = await menuManager.EnableMenuAsync(state, menuId);
+            return result;
+        }
+
+        /// <summary>
         /// 删除菜谱
         /// </summary>
         /// <param name="input"></param>

@@ -89,6 +89,11 @@
             分类id
             </summary>
         </member>
+        <member name="P:HuLuProject.Core.Entities.Wfd.MenuEntity.IsEnabled">
+            <summary>
+            是否启用
+            </summary>
+        </member>
         <member name="P:HuLuProject.Core.Entities.Wfd.MenuEntity.Type">
             <summary>
             导航 分类
@@ -283,6 +288,14 @@
             </summary>
             <param name="entity"></param>
             <param name="foodIds"></param>
+            <returns></returns>
+        </member>
+        <member name="M:HuLuProject.Core.Managers.Wfd.MenuManager.EnableMenuAsync(System.Boolean,System.String)">
+            <summary>
+            设置启用状态
+            </summary>
+            <param name="state"></param>
+            <param name="menuId"></param>
             <returns></returns>
         </member>
         <member name="M:HuLuProject.Core.Managers.Wfd.MenuManager.GetOneAsync(System.String)">
