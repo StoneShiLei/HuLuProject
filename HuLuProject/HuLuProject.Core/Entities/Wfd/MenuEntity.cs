@@ -41,6 +41,11 @@ namespace HuLuProject.Core.Entities.Wfd
         public string TypeId { get; set; }
 
         /// <summary>
+        /// 是否启用
+        /// </summary>
+        public bool IsEnabled { get; set; }
+
+        /// <summary>
         /// 导航 分类
         /// </summary>
         [Navigate(nameof(TypeId))]

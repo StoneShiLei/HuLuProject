@@ -1,16 +1,20 @@
-import { createRouter, createWebHashHistory, createWebHistory } from 'vue-router'
+import { createRouter, createWebHashHistory } from 'vue-router'
 import Index from './pages/Index.vue'
 import Login from './pages/Login.vue'
-import { store } from './models/store'
+import Type from './pages/Type.vue'
+import Food from './pages/Food.vue'
+import Menu from './pages/Menu.vue'
+import NotFound from './pages/NotFound.vue'
 import { checkUserAuth } from './util/util'
 
 const routes = [
-    { path: '/', redirect: '/index' },
+    { path: '/', redirect: '/login' },
     { path: '/login', component: Login },
-    { path: '/register', component: Index },
     { path: '/index', component: Index, meta: { requiresAuth: true } },
-    { path: '/cms', component: Index, meta: { requiresAuth: true } },
-    { path: '/:pathMatch(.*)', redirect: '/' },
+    { path: '/cms/type', component: Type, meta: { requiresAuth: true } },
+    { path: '/cms/food', component: Food, meta: { requiresAuth: true } },
+    { path: '/cms/menu', component: Menu, meta: { requiresAuth: true } },
+    { path: '/:pathMatch(.*)', component: NotFound },
 ]
 
 const router = createRouter({
@@ -21,14 +25,34 @@ const router = createRouter({
 //导航守卫  用户验证授权不通过则跳转到登录页
 router.beforeEach((to, from, next) => {
     if (to.matched.some(record => record.meta.requiresAuth)) {
-        if (!checkUserAuth()) {
-            next({
-                path: '/login',
-                query: { redirect: to.fullPath }
+        checkUserAuth()
+            .then((res) => {
+                if (!res) {
+                    next({
+                        path: '/login'
+                    })
+                } else {
+                    next();
+                }
             })
-        } else {
-            next();
-        }
+            .catch((error) => {
+                console.error(error)
+            })
+    }
+    else if (to.matched.some(record => record.path === '/login')) {
+        checkUserAuth()
+            .then((res) => {
+                if (res) {
+                    next({
+                        path: '/'
+                    })
+                } else {
+                    next();
+                }
+            })
+            .catch((error) => {
+                console.error(error)
+            })
     }
     else {
         next()

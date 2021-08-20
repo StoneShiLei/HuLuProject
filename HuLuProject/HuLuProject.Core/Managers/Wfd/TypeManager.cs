@@ -67,9 +67,15 @@ namespace HuLuProject.Core.Managers.Wfd
         /// <returns></returns>
         public async Task<bool> RemoveTypeAsync(string userId, string typeId)
         {
-            var result = await FreeSql.Delete<TypeEntity>().Where(f => f.UserId == userId && f.Id == typeId).ExecuteAffrowsAsync();
+            using var uow = FreeSql.CreateUnitOfWork();
 
-            return result > 0;
+            //如果该分类下含有子项目  则不允许删除
+            var result1 = await uow.Orm.Select<MenuEntity>().AnyAsync(m => m.TypeId == typeId);
+            if (result1) return false;
+
+            var result2 = await uow.Orm.Delete<TypeEntity>().Where(f => f.UserId == userId && f.Id == typeId).ExecuteAffrowsAsync();
+            uow.Commit();
+            return result2 > 0;
         }
 
         /// <summary>

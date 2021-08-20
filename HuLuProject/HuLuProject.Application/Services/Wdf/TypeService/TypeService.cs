@@ -87,10 +87,13 @@ namespace HuLuProject.Application.Services.Wdf.TypeService
         /// <param name="input"></param>
         /// <returns></returns>
         [HttpPost, Route("type/remove")]
-        public Task<bool> RemoveType([Required, FromBody] TypeDeleteInput input)
+        public async Task<bool> RemoveType([Required, FromBody] TypeDeleteInput input)
         {
-            var result = typeManager.RemoveTypeAsync(UserId, input.TypeId);
-            return result;
+            var result = await typeManager.RemoveTypeAsync(UserId, input.TypeId);
+            if (result) return true;
+
+            UnifyContext.Fill(new { Message = "删除失败，该分类下仍存在菜谱！" });
+            return false;
         }
     }
 }

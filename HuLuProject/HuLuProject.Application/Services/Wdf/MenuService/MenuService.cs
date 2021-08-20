@@ -41,7 +41,7 @@ namespace HuLuProject.Application.Services.Wdf.MenuService
                 UserId = e.UserId,
                 MenuName = e.MenuName,
                 TypeName = e.Type.TypeName,
-                TypeId = e.TypeId
+                TypeId = e.TypeId,
             }).ToList();
 
             return result;
@@ -64,7 +64,8 @@ namespace HuLuProject.Application.Services.Wdf.MenuService
                 MenuName = e.MenuName,
                 TypeName = e.Type.TypeName,
                 FoodNames = string.Join('、',e.Foods),
-                CreatedTime = e.CreatedTime
+                CreatedTime = e.CreatedTime,
+                IsEnabled = e.IsEnabled
             }).ToList();
 
             return result;
@@ -111,7 +112,8 @@ namespace HuLuProject.Application.Services.Wdf.MenuService
                 UserId = UserId,
                 MenuName = input.MenuName,
                 TypeId = input.TypeId,
-                CreatedTime = DateTime.UtcNow
+                CreatedTime = DateTime.UtcNow,
+                IsEnabled = true
             };
             var result = await menuManager.AddOrUpdateMenuAsync(entity,input.FoodIds);
             return result;

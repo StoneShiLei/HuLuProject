@@ -31,7 +31,7 @@ namespace HuLuProject.Core.Managers.Wfd
                 string typeId = kv.Key;
                 var (count, foodIds) = kv.Value;
                 //该用户 某分类下包含某些食材的菜谱
-                Expression<Func<MenuEntity, bool>> where = m => m.UserId == userId && m.TypeId == typeId;
+                Expression<Func<MenuEntity, bool>> where = m => m.UserId == userId && m.TypeId == typeId && m.IsEnabled == true;
                 if (foodIds != null && foodIds.Any()) where = where.And(m => m.Foods.AsSelect().Any(f => foodIds.Contains(f.Id))); //如果foodIds不为空则查询包含food的菜谱
 
                 //如果请求的数量大于等于符合条件的菜谱数量,则直接返回全部符合条件的结果
@@ -110,6 +110,18 @@ namespace HuLuProject.Core.Managers.Wfd
 
             uow.Commit();
             return result != null;
+        }
+
+        /// <summary>
+        /// 设置启用状态
+        /// </summary>
+        /// <param name="state"></param>
+        /// <param name="menuId"></param>
+        /// <returns></returns>
+        public async Task<bool> EnableMenuAsync(bool state,string menuId)
+        {
+            var result = await FreeSql.Update<MenuEntity>().Set(m => m.IsEnabled, state).Where(m => m.Id == menuId).ExecuteAffrowsAsync();
+            return result > 0;
         }
 
         /// <summary>

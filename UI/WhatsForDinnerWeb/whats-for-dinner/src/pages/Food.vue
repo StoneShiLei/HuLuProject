@@ -7,6 +7,4 @@ import { useHttp } from "../api/http";
 
 const http = useHttp();
 
-
-
 </script>

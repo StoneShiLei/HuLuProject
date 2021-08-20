@@ -67,9 +67,12 @@ namespace HuLuProject.Core.Managers.Wfd
         /// <returns></returns>
         public async Task<bool> RemoveFoodAsync(string userId,string foodId)
         {
-            var result = await FreeSql.Delete<FoodEntity>().Where(f => f.UserId == userId && f.Id == foodId).ExecuteAffrowsAsync();
+            using var uow = FreeSql.CreateUnitOfWork();
 
-            return result > 0;
+            var result1 = await uow.Orm.Delete<FoodEntity>().Where(f => f.UserId == userId && f.Id == foodId).ExecuteAffrowsAsync();
+            var result2 = await uow.Orm.Delete<MenuFoodEntity>().Where(m => m.FoodId == foodId).ExecuteAffrowsAsync();
+            uow.Commit();
+            return result1 > 0 && result2 > 0;
         }
 
         /// <summary>

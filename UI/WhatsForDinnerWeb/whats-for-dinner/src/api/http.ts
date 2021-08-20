@@ -1,6 +1,15 @@
 import service from './service'
 
-export function get<T>(url: string, params: any): Promise<CallBack<T>> {
+export const http = {
+    get: get,
+    post: post
+}
+
+export function useHttp() {
+    return http;
+}
+
+function get<T>(url: string, params: any): Promise<CallBack<T>> {
     return new Promise((resolve, reject) => {
         service.get(url, { params: params }).then(res => {
             resolve(res.data);
@@ -10,7 +19,7 @@ export function get<T>(url: string, params: any): Promise<CallBack<T>> {
     })
 }
 
-export function post<T>(url: string, params: any): Promise<CallBack<T>> {
+function post<T>(url: string, params: any): Promise<CallBack<T>> {
     return new Promise((resolve, reject) => {
         service.post(url, params).then(res => {
             resolve(res.data);

@@ -1,28 +1,41 @@
 <template>
-  <n-form :model="model" :rules="rules" ref="formRef">
-    <n-form-item label="用户名" path="userName">
-      <n-input v-model:value="model.userName" placeholder="请输入用户名" />
-    </n-form-item>
-    <n-form-item label="密码" path="password">
-      <n-input
-        v-model:value="model.password"
-        placeholder="请输入密码"
+  <van-form validate-trigger="onBlur" ref="formRef" style="margin-top: 40px;">
+    <van-cell-group inset>
+      <van-field
+        v-model="model.userName"
+        name="用户名"
+        label="用户名"
+        placeholder="用户名"
+        :rules="[{ required: true, message: '请填写用户名' }]"
+      ></van-field>
+      <van-field
+        v-model="model.password"
         type="password"
-      />
-    </n-form-item>
-    <n-button @click="handleRegisterClick" attr-type="button">注册</n-button>
-    <n-button @click="handleLoginClick" attr-type="button">登陆</n-button>
-  </n-form>
+        name="密码"
+        label="密码"
+        placeholder="密码"
+        :rules="[{ required: true, message: '请填写密码' }]"
+      ></van-field>
+    </van-cell-group>
+    <div style="margin: 16px;">
+      <van-button round block type="primary" native-type="button" @click="handleLoginClick">登陆</van-button>
+    </div>
+    <div style="margin: 16px;">
+      <van-button round block type="success" native-type="button" @click="handleRegisterClick">注册</van-button>
+    </div>
+  </van-form>
 </template>
 
 <script setup lang="ts">
-import { getCurrentInstance, ref } from "vue";
+import { ref } from "vue";
 import url from "../api/url";
-import { useMessage, NForm, NFormItem, NInput, NButton } from "naive-ui";
+import { useHttp } from "../api/http";
+import { useRouter } from "vue-router";
+import { FormInstance, Notify } from "vant";
 
-const com = getCurrentInstance();
-const formRef = ref<InstanceType<typeof NForm>>();
-const message = useMessage();
+const formRef = ref<FormInstance>();
+const http = useHttp();
+const router = useRouter();
 
 const model = ref({
   userName: null,
@@ -31,68 +44,51 @@ const model = ref({
 
 //登陆
 function handleLoginClick(event: Event): void {
-  formRef.value?.validate((errors) => {
-    if (!errors) {
-      com?.proxy
-        ?.$get<boolean>(url.UserLogin, model.value)
+  formRef.value?.validate()
+    .then(() => {
+      http
+        .get<boolean>(url.UserLogin, model.value)
         .then((res) => {
           if (res.statusCode == 200 && res.data) {
-            message.success("登陆成功");
-            com.proxy?.$router.push({ path: "/index" });
+            Notify({ type: "success", message: "登陆成功" });
+            router.push({ path: "/index" });
           } else if (res.statusCode == 200 && !res.data) {
-            message.error(res.extras.message);
+            Notify({ type: "danger", message: res.extras.message });
           } else {
-            message.error("登陆失败，系统异常");
-            console.log(res);
+            Notify({ type: "danger", message: "登陆失败，系统异常" });
+            console.error(res);
           }
         })
         .catch((err) => {
-          message.error("登陆失败，系统异常");
-          console.log(err);
+          Notify({ type: "danger", message: "登陆失败，系统异常" });
+          console.error(err);
         });
-    } else {
-      message.error(errors[0][0].message);
-    }
-  });
+    })
+    .catch((err) => { })
 }
 
 //注册
 function handleRegisterClick(event: Event): void {
-  formRef.value?.validate((errors) => {
-    if (!errors) {
-      com?.proxy
-        ?.$post<boolean>(url.UserRegister, model.value)
+  formRef.value?.validate()
+    .then(() => {
+      http
+        .post<boolean>(url.UserRegister, model.value)
         .then((res) => {
           if (res.statusCode == 200 && res.data) {
-            message.success("注册成功，请点击登陆");
+            Notify({ type: "success", message: "注册成功，请点击登陆" });
           } else if (res.statusCode == 200 && !res.data) {
-            message.error(res.extras.message);
+            Notify("111")
+            // Notify({ type: "danger", message: res.extras.message });
           } else {
-            message.error("注册失败");
-            console.log(res);
+            Notify({ type: "danger", message: "注册失败" });
+            console.error(res);
           }
         })
-        .then((err) => {
-          message.error("注册失败，系统异常");
-          console.log(err);
+        .catch((err) => {
+          Notify({ type: "danger", message: "注册失败，系统异常" });
+          console.error(err);
         });
-    } else {
-      message.error(errors[0][0].message);
-    }
-  });
+    })
+    .catch((err) => { })
 }
-
-//表单验证规则
-const rules = {
-  userName: {
-    required: true,
-    message: "请输入用户名",
-    trigger: ["input", "blur"],
-  },
-  password: {
-    required: true,
-    message: "请输入密码",
-    trigger: ["input", "blur"],
-  },
-};
 </script>

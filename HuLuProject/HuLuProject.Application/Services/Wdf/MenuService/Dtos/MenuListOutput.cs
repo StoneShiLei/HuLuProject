@@ -36,6 +36,11 @@ namespace HuLuProject.Application.Services.Wdf.MenuService.Dtos
         /// </summary>
         public string FoodNames { get; set; }
 
+        /// <summary>
+        /// 是否启用
+        /// </summary>
+        public bool IsEnabled { get; set; }
+
 
         /// <summary>
         /// 创建时间
