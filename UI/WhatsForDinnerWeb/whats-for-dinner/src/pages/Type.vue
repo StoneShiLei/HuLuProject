@@ -60,7 +60,7 @@
 <script setup lang="ts">
 import url from "../api/url";
 import { useHttp } from "../api/http";
-import { ref, resolveComponent } from "vue";
+import { ref } from "vue";
 import { Dialog, FormInstance, Notify, SwipeCellInstance } from "vant";
 
 const swipeCellRef = ref<SwipeCellInstance>();

@@ -8,8 +8,8 @@ interface TypeModel {
 }
 
 interface FoodModel {
-    id: string,
-    userId: string,
+    id?: string,
+    userId?: string,
     foodName: string
 }
 

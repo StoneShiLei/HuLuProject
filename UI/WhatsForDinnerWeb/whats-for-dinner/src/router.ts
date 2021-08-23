@@ -24,39 +24,35 @@ const router = createRouter({
 
 //导航守卫  用户验证授权不通过则跳转到登录页
 router.beforeEach((to, from, next) => {
-    if (to.matched.some(record => record.meta.requiresAuth)) {
-        checkUserAuth()
-            .then((res) => {
-                if (!res) {
-                    next({
-                        path: '/login'
-                    })
-                } else {
-                    next();
-                }
-            })
-            .catch((error) => {
-                console.error(error)
-            })
-    }
-    else if (to.matched.some(record => record.path === '/login')) {
-        checkUserAuth()
-            .then((res) => {
+    console.log(to)
+    checkUserAuth()
+        .then((res) => {
+            console.log(res)
+            if (to.matched.some(record => record.meta.requiresAuth)) {
                 if (res) {
-                    next({
-                        path: '/'
-                    })
-                } else {
                     next();
+                    return;
                 }
-            })
-            .catch((error) => {
-                console.error(error)
-            })
-    }
-    else {
-        next()
-    }
+                next({
+                    path: '/login'
+                })
+            }
+            else if (to.matched.some(record => record.path === '/login')) {
+                if (!res) {
+                    next();
+                    return;
+                }
+                next({
+                    path: '/index'
+                })
+            }
+            else {
+                next()
+            }
+        })
+        .catch((error) => {
+            console.error(error)
+        })
 });
 
 export default router;

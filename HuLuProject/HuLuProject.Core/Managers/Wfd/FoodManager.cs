@@ -72,7 +72,7 @@ namespace HuLuProject.Core.Managers.Wfd
             var result1 = await uow.Orm.Delete<FoodEntity>().Where(f => f.UserId == userId && f.Id == foodId).ExecuteAffrowsAsync();
             var result2 = await uow.Orm.Delete<MenuFoodEntity>().Where(m => m.FoodId == foodId).ExecuteAffrowsAsync();
             uow.Commit();
-            return result1 > 0 && result2 > 0;
+            return result1 > 0;
         }
 
         /// <summary>
