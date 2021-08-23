@@ -14,11 +14,11 @@ interface FoodModel {
 }
 
 interface MenuModel {
-    id: string,
-    userId: string,
+    id?: string,
+    userId?: string,
     menuName: string,
-    typeName: string,
+    typeName?: string,
     typeId: string,
-    foodNames: string,
+    foodNames?: string,
     foodIds: string[]
 }

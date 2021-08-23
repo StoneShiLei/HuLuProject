@@ -63,7 +63,7 @@ namespace HuLuProject.Application.Services.Wdf.MenuService
                 UserId = e.UserId,
                 MenuName = e.MenuName,
                 TypeName = e.Type.TypeName,
-                FoodNames = string.Join('、',e.Foods),
+                FoodNames = string.Join('、',e.Foods.Select(i => i.FoodName)),
                 CreatedTime = e.CreatedTime,
                 IsEnabled = e.IsEnabled
             }).ToList();
