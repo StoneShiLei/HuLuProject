@@ -24,10 +24,8 @@ const router = createRouter({
 
 //导航守卫  用户验证授权不通过则跳转到登录页
 router.beforeEach((to, from, next) => {
-    console.log(to)
     checkUserAuth()
         .then((res) => {
-            console.log(res)
             if (to.matched.some(record => record.meta.requiresAuth)) {
                 if (res) {
                     next();

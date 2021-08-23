@@ -20,5 +20,6 @@ interface MenuModel {
     typeName?: string,
     typeId: string,
     foodNames?: string,
-    foodIds: string[]
+    foodIds: string[],
+    isEnabled?: boolean
 }

@@ -25,9 +25,16 @@
                 <van-button square type="primary" style="height: 100%;">修改</van-button>
             </template>
             <van-cell :title="item.menuName" :value="item.typeName" :border="true" center>
-                <template
-                    #label
-                >{{ item.foodNames?.map((item) => { return item.menuName }).join(',') }}</template>
+                <template #right-icon>
+                    <van-switch
+                        :model-value="item.isEnabled"
+                        @update:model-value="handleEnabledSwitch(!item.isEnabled, item.id)"
+                        :name="item.id"
+                        size="24px"
+                        style="margin-left:15px;"
+                    />
+                </template>
+                <template #label>{{ item.foodNames }}</template>
             </van-cell>
             <template #left>
                 <van-button square type="danger" style="height: 100%;">删除</van-button>
@@ -199,4 +206,27 @@ function handleAddOrUpdateClick() {
         .catch((err) => { console.log(err) })
 }
 
+//切换开启状态
+function handleEnabledSwitch(newValue: boolean, menuId: string | undefined) {
+    const id = menuId as string
+    http
+        .get<MenuModel>(url.MenuEnable, { state: newValue, menuId: id })
+        .then((res) => {
+            if (res.statusCode == 200 && res.data) {
+                const model = list.value.find(m => m.id === id)
+                if (model != undefined) {
+                    model.isEnabled = newValue
+                }
+            } else if (res.statusCode == 200 && !res.data) {
+                Notify({ type: "danger", message: res.extras.message });
+            } else {
+                Notify({ type: "danger", message: "操作失败，系统异常" });
+                console.error(res);
+            }
+        })
+        .catch((err) => {
+            Notify({ type: "danger", message: "操作失败，系统异常" });
+            console.error(err);
+        });
+}
 </script>
