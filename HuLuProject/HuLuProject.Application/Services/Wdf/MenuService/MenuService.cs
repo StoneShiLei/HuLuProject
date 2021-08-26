@@ -1,6 +1,7 @@
 ﻿using Furion;
 using Furion.DistributedIDGenerator;
 using Furion.UnifyResult;
+using HuLuProject.Application.Services.Wdf.FoodService.Dtos;
 using HuLuProject.Application.Services.Wdf.MenuService.Dtos;
 using HuLuProject.Core.Entities.Wfd;
 using HuLuProject.Core.Managers.Wfd;
@@ -45,6 +46,7 @@ namespace HuLuProject.Application.Services.Wdf.MenuService
                 MenuName = e.MenuName,
                 TypeName = e.Type.TypeName,
                 TypeId = e.TypeId,
+                Foods = Mapper.Map<List<FoodOutput>>(e.Foods)
             }).ToList();
 
             return result;

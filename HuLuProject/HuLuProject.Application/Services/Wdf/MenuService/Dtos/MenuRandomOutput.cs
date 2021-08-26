@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using HuLuProject.Application.Services.Wdf.FoodService.Dtos;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,5 +39,8 @@ namespace HuLuProject.Application.Services.Wdf.MenuService.Dtos
         /// </summary>
         [JsonProperty("typeId")]
         public string TypeId { get; set; }
+
+        [JsonProperty("foods")]
+        public List<FoodOutput> Foods { get; set; }
     }
 }
