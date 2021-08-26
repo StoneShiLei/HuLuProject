@@ -4,7 +4,7 @@ import { ADD_TOKENINFO } from '../models/store';
 
 const service = axios.create({
     // baseURL: "http://localhost:9000/api",
-    baseURL: "http://localhost:9000",
+    baseURL: "http://www.hafuhafu.cn:9000",
     timeout: 1 * 60 * 1000
 });
 
@@ -15,6 +15,7 @@ service.interceptors.request.use(
             // 判断是否存在token，如果存在的话，则每个http header都加上token
             config.headers.Authorization = `Bearer ${store.state.tokenInfo.token}`;
             config.headers.ContentType = "application/x-www-form-urlencoded"
+            config.withCredentials = false;
             //如果token过期  则带上刷新token
             const now = Date.parse(new Date().toString()) / 1000;
             if (now > store.state.tokenInfo.exp) {
