@@ -3,7 +3,8 @@ import { ADD_RTOKEN, ADD_USERINFO, REMOVE_USERAUTH, store } from '../models/stor
 import { ADD_TOKENINFO } from '../models/store';
 
 const service = axios.create({
-    baseURL: "/api",
+    // baseURL: "http://localhost:9000/api",
+    baseURL: "http://localhost:9000",
     timeout: 1 * 60 * 1000
 });
 
@@ -13,7 +14,7 @@ service.interceptors.request.use(
         if (store.state.tokenInfo.token) {
             // 判断是否存在token，如果存在的话，则每个http header都加上token
             config.headers.Authorization = `Bearer ${store.state.tokenInfo.token}`;
-
+            config.headers.ContentType = "application/x-www-form-urlencoded"
             //如果token过期  则带上刷新token
             const now = Date.parse(new Date().toString()) / 1000;
             if (now > store.state.tokenInfo.exp) {
@@ -31,10 +32,9 @@ service.interceptors.request.use(
 service.interceptors.response.use(
     config => {
         if (!config.data?.succeeded) return Promise.reject(config);
-
+        console.log(config)
         const token: string = config.headers["access-token"];
         const rToken: string = config.headers["x-access-token"];
-
         if (token) {
             //解析jwt的payload
             const jwtStr = decodeURIComponent(escape(window.atob(token.split('.')[1])));
