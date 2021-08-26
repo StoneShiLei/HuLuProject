@@ -61,7 +61,7 @@ namespace HuLuProject.Core.Managers.Wfd
                     menuIds.RemoveAt(index);
                 }
                 where = where.And(m => randomIds.Contains(m.Id));
-                var randomList = await FreeSql.Select<MenuEntity>().Where(where).Include(m => m.Type).ToListAsync();
+                var randomList = await FreeSql.Select<MenuEntity>().Where(where).Include(m => m.Type).IncludeMany(m => m.Foods).ToListAsync();
 
                 //加入到结果集
                 result.AddRange(randomList);

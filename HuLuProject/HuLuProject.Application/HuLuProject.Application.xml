@@ -252,6 +252,21 @@
             食材id列表
             </summary>
         </member>
+        <member name="P:HuLuProject.Application.Services.Wdf.MenuService.Dtos.MenuRandomInput.TypeId">
+            <summary>
+            typeId
+            </summary>
+        </member>
+        <member name="P:HuLuProject.Application.Services.Wdf.MenuService.Dtos.MenuRandomInput.Volume">
+            <summary>
+            出菜数量
+            </summary>
+        </member>
+        <member name="P:HuLuProject.Application.Services.Wdf.MenuService.Dtos.MenuRandomInput.FoodIds">
+            <summary>
+            包含的食材id
+            </summary>
+        </member>
         <member name="P:HuLuProject.Application.Services.Wdf.MenuService.Dtos.MenuRandomOutput.Id">
             <summary>
             id
@@ -282,11 +297,11 @@
             菜谱接口
             </summary>
         </member>
-        <member name="M:HuLuProject.Application.Services.Wdf.MenuService.MenuService.GetRandomMenuList(System.Collections.Generic.Dictionary{System.String,System.Collections.Generic.KeyValuePair{System.Int32,System.Collections.Generic.List{System.String}}})">
+        <member name="M:HuLuProject.Application.Services.Wdf.MenuService.MenuService.GetRandomMenuList(System.Collections.Generic.List{HuLuProject.Application.Services.Wdf.MenuService.Dtos.MenuRandomInput})">
             <summary>
             随机出菜 post查询
             </summary>
-            <param name="SearchParam">查询条件 Dict[分类id,(出菜数量,List[食材id])]</param>
+            <param name="inputList">查询条件</param>
             <returns></returns>
         </member>
         <member name="M:HuLuProject.Application.Services.Wdf.MenuService.MenuService.GetMenuList(System.String)">

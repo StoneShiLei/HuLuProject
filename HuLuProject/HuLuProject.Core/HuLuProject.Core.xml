@@ -265,12 +265,12 @@
             菜谱
             </summary>
         </member>
-        <member name="M:HuLuProject.Core.Managers.Wfd.MenuManager.GetRandomMenuListAsync(System.String,System.Collections.Generic.Dictionary{System.String,System.Collections.Generic.KeyValuePair{System.Int32,System.Collections.Generic.List{System.String}}})">
+        <member name="M:HuLuProject.Core.Managers.Wfd.MenuManager.GetRandomMenuListAsync(System.String,System.Collections.Generic.List{HuLuProject.Core.View.I_Menu})">
             <summary>
             随机查询菜谱
             </summary>
             <param name="userId"></param>
-            <param name="typeDict">Dict[分类id,(出菜数量,List[食材id])]</param>
+            <param name="inputList"></param>
             <returns></returns>
         </member>
         <member name="M:HuLuProject.Core.Managers.Wfd.MenuManager.GetMenuListAsync(System.String,System.String,System.Boolean)">
