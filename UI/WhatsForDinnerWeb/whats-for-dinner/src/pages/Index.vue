@@ -7,6 +7,7 @@
                 native-type="button"
                 style="position: absolute;right: 0px;"
                 @click="handleRandomMenu"
+                :loading="loading"
             >吃！</van-button>
         </template>
     </van-nav-bar>
@@ -36,6 +37,36 @@
             />
         </div>
     </van-cell-group>
+
+    <van-popup v-model:show="show" position="bottom" :style="{ height: '100%' }">
+        <van-nav-bar title="吃这个！" :border="true" safe-area-inset-top>
+            <template #left>
+                <van-button
+                    size="normal"
+                    type="warning"
+                    native-type="button"
+                    style="position: absolute;left: 0px;min-width: 80px"
+                    @click="() => show = false"
+                >关闭</van-button>
+            </template>
+            <template #right>
+                <van-button
+                    size="normal"
+                    type="primary"
+                    native-type="button"
+                    style="position: absolute;right: 0px;min-width: 80px"
+                    @click="handleRandomMenu"
+                    :loading="loading"
+                >再想想</van-button>
+            </template>
+        </van-nav-bar>
+        <van-cell-group>
+            <van-cell v-for="item in results" :title="item.menuName">
+                <template #value>{{ item.typeName }}</template>
+                <template #label>{{ item.foods?.map((item) => { return item.foodName }).join(',') }}</template>
+            </van-cell>
+        </van-cell-group>
+    </van-popup>
 </template>
   
 <script setup lang="ts">
@@ -49,6 +80,8 @@ const http = useHttp();
 
 const foodList = ref<FoodModel[]>([])
 const typeList = ref<TypeModel[]>([])
+const show = ref(false);
+const loading = ref(false)
 
 onMounted(() => {
     http
@@ -101,10 +134,41 @@ interface MenuRandomInput {
 }
 const models = ref<MenuRandomInput[]>([])
 
+const results = ref<MenuModel[]>([])
 
 //随机出菜
 function handleRandomMenu() {
-    console.log(models.value)
+    //如果都为0弹出警告提示
+    const result = models.value.find((model) => { return !!model.volume })
+    if (!result) {
+        Notify({ type: 'warning', message: '至少选一种吃的吧', duration: 1000 });
+        return;
+    }
+
+    handleLoadEvevt();
+    show.value = true;
+}
+
+//列表数据加载
+function handleLoadEvevt() {
+    loading.value = true;
+    http
+        .post<MenuModel[]>(url.MenuRandom, models.value)
+        .then((res) => {
+            if (res.statusCode == 200 && res.data) {
+                results.value = res.data
+                loading.value = false;
+            } else if (res.statusCode == 200 && !res.data) {
+                Notify({ type: "danger", message: res.extras.message });
+            } else {
+                Notify({ type: "danger", message: "操作失败，系统异常" });
+                console.error(res);
+            }
+        })
+        .catch((err) => {
+            Notify({ type: "danger", message: "操作失败，系统异常" });
+            console.error(err);
+        });
 }
 
 </script>
