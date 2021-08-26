@@ -5,6 +5,7 @@ using HuLuProject.Application.Services.Wdf.MenuService.Dtos;
 using HuLuProject.Core.Entities.Wfd;
 using HuLuProject.Core.Managers.Wfd;
 using HuLuProject.Core.Universal;
+using HuLuProject.Core.View;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -28,12 +29,14 @@ namespace HuLuProject.Application.Services.Wdf.MenuService
         /// <summary>
         /// 随机出菜 post查询
         /// </summary>
-        /// <param name="SearchParam">查询条件 Dict[分类id,(出菜数量,List[食材id])]</param>
+        /// <param name="inputList">查询条件</param>
         /// <returns></returns>
         [HttpPost, Route("menu/random")]
-        public async Task<List<MenuRandomOutput>> GetRandomMenuList([Required,FromBody] Dictionary<string, KeyValuePair<int,List<string>>> SearchParam)
+        public async Task<List<MenuRandomOutput>> GetRandomMenuList([FromBody] List<MenuRandomInput> inputList)
         {
-            var entitys = await menuManager.GetRandomMenuListAsync(UserId, SearchParam);
+            if (!inputList.Any()) return new List<MenuRandomOutput>();
+
+            var entitys = await menuManager.GetRandomMenuListAsync(UserId, Mapper.Map<List<I_Menu>>(inputList));
 
             var result = entitys.Select(e => new MenuRandomOutput
             {

@@ -42,7 +42,8 @@
                 placeholder="名称"
                 :rules="[{ required: true, message: '请填写名称' }]"
                 :border="true"
-                center
+                error-message-align="right"
+                input-align="right"
             >
                 <template #button>
                     <van-button

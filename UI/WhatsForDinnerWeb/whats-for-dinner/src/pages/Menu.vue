@@ -42,26 +42,47 @@
         </van-swipe-cell>
     </van-list>
 
-    <van-popup v-model:show="show" position="top" :style="{ height: '20%' }">
+    <van-popup v-model:show="show" position="top" :style="{ height: '50%' }">
         <van-form validate-trigger="onBlur" ref="formRef" style="padding-top:50px;">
             <van-field
-                v-model="model.typeName"
+                v-model="model.menuName"
                 name="名称"
                 label="名称"
                 placeholder="名称"
                 :rules="[{ required: true, message: '请填写名称' }]"
                 :border="true"
-                center
-            >
-                <template #button>
-                    <van-button
-                        size="small"
-                        type="primary"
-                        native-type="button"
-                        @click="handleAddOrUpdateClick"
-                    >确定</van-button>
-                </template>
-            </van-field>
+                error-message-align="right"
+                input-align="right"
+            />
+
+            <FieldSelectPicker
+                label="类型"
+                name="类型"
+                placeholder="请选择类型"
+                v-model:selectValue="model.typeId"
+                :rules="[{ required: true, message: '请选择类型' }]"
+                :columns="typeList"
+                :option="{ label: 'typeName', value: 'id' }"
+            />
+
+            <FieldCheckbox
+                label="食材"
+                name="食材"
+                placeholder="请选择食材"
+                v-model:selectValue="model.foodIds"
+                :rules="[{ required: true, message: '请选择食材' }]"
+                :columns="foodList"
+                label-width="100"
+                :option="{ label: 'foodName', value: 'id' }"
+                :is-search="true"
+            />
+            <van-button
+                size="normal"
+                type="primary"
+                native-type="button"
+                @click="handleAddOrUpdateClick"
+                style="position: absolute;right: 30px;bottom: 20px;"
+            >确定</van-button>
         </van-form>
     </van-popup>
 </template>
@@ -69,8 +90,10 @@
 <script setup lang="ts">
 import url from "../api/url";
 import { useHttp } from "../api/http";
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import { Dialog, FormInstance, Notify, SwipeCellInstance } from "vant";
+import FieldCheckbox from "../components/FieldCheckbox.vue";
+import FieldSelectPicker from "../components/FieldSelectPicker.vue";
 
 const swipeCellRef = ref<SwipeCellInstance>();
 const formRef = ref<FormInstance>();
@@ -80,7 +103,10 @@ const show = ref(false);
 
 const isLoading = ref(false);
 const isFinished = ref(false);
+
 const list = ref<MenuModel[]>([])
+const foodList = ref<FoodModel[]>([])
+const typeList = ref<TypeModel[]>([])
 
 let model = ref<MenuModel>(
     {
@@ -89,6 +115,41 @@ let model = ref<MenuModel>(
         foodIds: []
     }
 )
+
+onMounted(() => {
+    http
+        .get<FoodModel[]>(url.FoodList, {})
+        .then((res) => {
+            if (res.statusCode == 200 && res.data) {
+                foodList.value = res.data;
+            } else if (res.statusCode == 200 && !res.data) {
+                Notify({ type: "danger", message: res.extras.message });
+            } else {
+                Notify({ type: "danger", message: "接口异常" });
+                console.error(res);
+            }
+        })
+        .catch((err) => {
+            Notify({ type: "danger", message: "接口异常" });
+            console.error(err);
+        });
+    http
+        .get<TypeModel[]>(url.TypeList, {})
+        .then((res) => {
+            if (res.statusCode == 200 && res.data) {
+                typeList.value = res.data;
+            } else if (res.statusCode == 200 && !res.data) {
+                Notify({ type: "danger", message: res.extras.message });
+            } else {
+                Notify({ type: "danger", message: "接口异常" });
+                console.error(res);
+            }
+        })
+        .catch((err) => {
+            Notify({ type: "danger", message: "接口异常" });
+            console.error(err);
+        });
+})
 
 //列表数据加载
 function handleLoadEvevt() {
@@ -185,7 +246,7 @@ function handleAddOrUpdateClick() {
         .then(() => {
             console.log(model.value)
             http
-                .post<boolean>(url.TypeAddOrUpdate, model.value)
+                .post<boolean>(url.MenuAddOrUpdate, model.value)
                 .then((res) => {
                     if (res.statusCode == 200 && res.data) {
                         Notify({ type: "success", message: "操作成功" });

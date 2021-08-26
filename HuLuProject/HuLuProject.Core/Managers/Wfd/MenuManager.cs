@@ -1,6 +1,7 @@
 ﻿using FreeSql;
 using Furion.FriendlyException;
 using HuLuProject.Core.Entities.Wfd;
+using HuLuProject.Core.View;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,22 +22,24 @@ namespace HuLuProject.Core.Managers.Wfd
         /// 随机查询菜谱
         /// </summary>
         /// <param name="userId"></param>
-        /// <param name="typeDict">Dict[分类id,(出菜数量,List[食材id])]</param>
+        /// <param name="inputList"></param>
         /// <returns></returns>
-        public async Task<List<MenuEntity>> GetRandomMenuListAsync(string userId, Dictionary<string, KeyValuePair<int, List<string>>> typeDict)
+        public async Task<List<MenuEntity>> GetRandomMenuListAsync(string userId, List<I_Menu> inputList)
         {
             List<MenuEntity> result = new();
-            foreach(var kv in typeDict)
+            foreach(var input in inputList)
             {
-                string typeId = kv.Key;
-                var (count, foodIds) = kv.Value;
+                string typeId = input.TypeId;
+                var Volume = input.Volume;
+                var foodIds = input.FoodIds;
+
                 //该用户 某分类下包含某些食材的菜谱
                 Expression<Func<MenuEntity, bool>> where = m => m.UserId == userId && m.TypeId == typeId && m.IsEnabled == true;
                 if (foodIds != null && foodIds.Any()) where = where.And(m => m.Foods.AsSelect().Any(f => foodIds.Contains(f.Id))); //如果foodIds不为空则查询包含food的菜谱
 
                 //如果请求的数量大于等于符合条件的菜谱数量,则直接返回全部符合条件的结果
                 var menuCount = FreeSql.Select<MenuEntity>().Where(where).Count();
-                if(count >= menuCount)
+                if(Volume >= menuCount)
                 {
                     var menus = await FreeSql.Select<MenuEntity>()
                         .Where(where)
@@ -50,7 +53,7 @@ namespace HuLuProject.Core.Managers.Wfd
                 var menuIds = await FreeSql.Select<MenuEntity>().Where(where).ToListAsync(m => m.Id);
                 List<string> randomIds = new();
                 Random rm = new();
-                for(int i=0;i<count;i++)
+                for(int i=0;i<Volume;i++)
                 {
                     //生成一个不大于menuIds长度的随机数
                     int index = rm.Next(menuIds.Count);
