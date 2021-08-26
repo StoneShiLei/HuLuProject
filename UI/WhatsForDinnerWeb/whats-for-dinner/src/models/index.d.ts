@@ -21,5 +21,6 @@ interface MenuModel {
     typeId: string,
     foodNames?: string,
     foodIds: string[],
-    isEnabled?: boolean
+    isEnabled?: boolean,
+    foods?: FoodModel[]
 }

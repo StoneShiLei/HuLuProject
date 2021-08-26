@@ -30,8 +30,10 @@ namespace HuLuProject.Core.Managers.Wfd
             foreach(var input in inputList)
             {
                 string typeId = input.TypeId;
-                var Volume = input.Volume;
+                var volume = input.Volume;
                 var foodIds = input.FoodIds;
+
+                if (volume < 1) continue;
 
                 //该用户 某分类下包含某些食材的菜谱
                 Expression<Func<MenuEntity, bool>> where = m => m.UserId == userId && m.TypeId == typeId && m.IsEnabled == true;
@@ -39,7 +41,7 @@ namespace HuLuProject.Core.Managers.Wfd
 
                 //如果请求的数量大于等于符合条件的菜谱数量,则直接返回全部符合条件的结果
                 var menuCount = FreeSql.Select<MenuEntity>().Where(where).Count();
-                if(Volume >= menuCount)
+                if(volume >= menuCount)
                 {
                     var menus = await FreeSql.Select<MenuEntity>()
                         .Where(where)
@@ -53,7 +55,7 @@ namespace HuLuProject.Core.Managers.Wfd
                 var menuIds = await FreeSql.Select<MenuEntity>().Where(where).ToListAsync(m => m.Id);
                 List<string> randomIds = new();
                 Random rm = new();
-                for(int i=0;i<Volume;i++)
+                for(int i=0;i<volume;i++)
                 {
                     //生成一个不大于menuIds长度的随机数
                     int index = rm.Next(menuIds.Count);
