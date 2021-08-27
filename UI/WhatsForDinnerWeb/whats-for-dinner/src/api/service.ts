@@ -33,7 +33,6 @@ service.interceptors.request.use(
 service.interceptors.response.use(
     config => {
         if (!config.data?.succeeded) return Promise.reject(config);
-        console.log(config)
         const token: string = config.headers["access-token"];
         const rToken: string = config.headers["x-access-token"];
         if (token) {
