@@ -46,6 +46,7 @@ namespace HuLuProject.Core.Managers.Wfd
                     var menus = await FreeSql.Select<MenuEntity>()
                         .Where(where)
                         .Include(m => m.Type)
+                        .IncludeMany(m => m.Foods)
                         .ToListAsync();
                     result.AddRange(menus);
                     continue;
