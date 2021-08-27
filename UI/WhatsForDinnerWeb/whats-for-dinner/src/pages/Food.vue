@@ -31,17 +31,18 @@
         </van-swipe-cell>
     </van-list>
 
-    <van-popup v-model:show="show" position="top" :style="{ height: '20%' }">
+    <van-popup v-model:show="show" position="top" :style="{ height: '30%' }">
         <van-form validate-trigger="onBlur" ref="formRef" style="padding-top:50px;">
             <van-field
                 v-model="model.foodName"
                 name="名称"
                 label="名称"
-                placeholder="名称"
+                placeholder="批量添加可用逗号分隔"
                 :rules="[{ required: true, message: '请填写名称' }]"
                 :border="true"
                 error-message-align="right"
                 input-align="right"
+                center
             >
                 <template #button>
                     <van-button
@@ -58,7 +59,7 @@
   
 <script setup lang="ts">
 import url from "../api/url";
-import { useHttp } from "../api/http";
+import { CallBack, useHttp } from "../api/http";
 import { ref } from "vue";
 import { Dialog, FormInstance, Notify, SwipeCellInstance } from "vant";
 
@@ -170,23 +171,44 @@ function handleClose(event: { name: string, position: 'left' | 'right' | 'cell' 
 function handleAddOrUpdateClick() {
     formRef.value?.validate()
         .then(() => {
-            console.log(model.value)
-            http
-                .post<boolean>(url.FoodAddOrUpdate, model.value)
-                .then((res) => {
-                    if (res.statusCode == 200 && res.data) {
-                        Notify({ type: "success", message: "操作成功" });
-                        show.value = false;
-                        handleLoadEvevt()
-                    } else if (res.statusCode == 200 && !res.data) {
-                        Notify({ type: "danger", message: res.extras.message });
+            const nameArr = model.value.foodName.replace('，', ',').split(',');
+            const promiseList: Promise<CallBack<boolean>>[] = []
+            nameArr.forEach((item) => {
+                const tempModel = JSON.parse(JSON.stringify(model.value));
+                tempModel.foodName = item;
+                const promise = http.post<boolean>(url.FoodAddOrUpdate, tempModel);
+                promiseList.push(promise)
+            })
+
+            Promise.all(promiseList).then((res) => {
+                const resultFlag: { res: boolean, message?: string }[] = [];
+
+                res.forEach((item) => {
+                    if (item.statusCode == 200 && item.data) {
+
+                    } else if (item.statusCode == 200 && !item.data) {
+                        resultFlag.push({ res: false, message: item.extras.message });
                     } else {
-                        Notify({ type: "danger", message: "操作失败，系统异常" });
+                        resultFlag.push({ res: false });
                         console.error(res);
                     }
                 })
+
+
+                if (resultFlag.length) {
+                    if (resultFlag[0].message) {
+                        Notify({ type: "danger", message: resultFlag[0].message });
+                    } else {
+                        Notify({ type: "danger", message: "操作失败，系统异常" });
+                    }
+                }
+                else {
+                    Notify({ type: "success", message: "操作成功" });
+                    show.value = false;
+                    handleLoadEvevt()
+                }
+            })
                 .catch((err) => {
-                    Notify({ type: "danger", message: "操作失败，系统异常" });
                     console.error(err);
                 });
         })

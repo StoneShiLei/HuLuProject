@@ -63,7 +63,7 @@ namespace HuLuProject.Application.Services.Wdf.FoodService
 
             if(await foodManager.IsExistNameAsync(UserId,input.FoodName))
             {
-                UnifyContext.Fill(new { Message = "已存在同名食材" });
+                UnifyContext.Fill(new { Message = $"已存在同名食材：{input.FoodName}" });
                 return false;
             }
 

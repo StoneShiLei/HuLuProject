@@ -42,7 +42,7 @@
         </van-swipe-cell>
     </van-list>
 
-    <van-popup v-model:show="show" position="top" :style="{ height: '50%' }">
+    <van-popup v-model:show="show" position="top" :style="{ height: '70%' }">
         <van-form validate-trigger="onBlur" ref="formRef" style="padding-top:50px;">
             <van-field
                 v-model="model.menuName"
@@ -244,7 +244,6 @@ function handleClose(event: { name: string, position: 'left' | 'right' | 'cell' 
 function handleAddOrUpdateClick() {
     formRef.value?.validate()
         .then(() => {
-            console.log(model.value)
             http
                 .post<boolean>(url.MenuAddOrUpdate, model.value)
                 .then((res) => {

@@ -76,7 +76,7 @@ namespace HuLuProject.Application.Services.Wdf.TypeService
 
             if (await typeManager.IsExistNameAsync(UserId, input.TypeName))
             {
-                UnifyContext.Fill(new { Message = "已存在同名分类" });
+                UnifyContext.Fill(new { Message = $"已存在同名分类：{input.TypeName}" });
                 return false;
             }
 

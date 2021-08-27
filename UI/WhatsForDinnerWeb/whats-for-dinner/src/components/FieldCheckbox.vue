@@ -28,7 +28,7 @@
             </van-col>
         </van-row>
         <div class="checkbox-con" style="max-height:264px;overflow-y:auto">
-            <van-checkbox-group v-model="checkboxValue" @change="change" ref="checkboxGroup">
+            <van-checkbox-group v-model="checkboxValue" @change="change">
                 <van-cell-group>
                     <van-cell
                         v-for="(item, index) in columnsData"
