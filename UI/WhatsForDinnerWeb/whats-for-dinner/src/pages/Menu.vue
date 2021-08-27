@@ -77,7 +77,6 @@
                 name="食材"
                 placeholder="请选择食材"
                 v-model:selectValue="model.foodIds"
-                :rules="[{ required: true, message: '请选择食材' }]"
                 :columns="foodList"
                 label-width="100"
                 :option="{ label: 'foodName', value: 'id' }"

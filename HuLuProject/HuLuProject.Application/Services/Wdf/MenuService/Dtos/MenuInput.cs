@@ -33,7 +33,7 @@ namespace HuLuProject.Application.Services.Wdf.MenuService.Dtos
         /// <summary>
         /// 食材id列表
         /// </summary>
-        [Required,MinLength(1)]
+        [Required]
         [JsonProperty("foodIds")]
         public List<string> FoodIds { get; set; }
     }
