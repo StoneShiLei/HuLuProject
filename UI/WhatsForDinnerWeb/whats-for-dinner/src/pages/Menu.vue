@@ -1,11 +1,18 @@
 <template>
-    <van-nav-bar
-        title="菜谱"
-        right-text="新增"
-        @click-right="handleAddShow"
-        :border="true"
-        safe-area-inset-top
-    />
+    <van-nav-bar right-text="新增" @click-right="handleAddShow" :border="true" safe-area-inset-top>
+        <template #title>
+            <van-field
+                v-model="searchVal"
+                placeholder="搜索"
+                input-align="center"
+                style="width: 100%;"
+            >
+                <template #button>
+                    <van-button size="small" plain type="primary">清空</van-button>
+                </template>
+            </van-field>
+        </template>
+    </van-nav-bar>
 
     <van-list
         v-model:loading="isLoading"
@@ -90,7 +97,7 @@
 <script setup lang="ts">
 import url from "../api/url";
 import { useHttp } from "../api/http";
-import { onMounted, ref } from "vue";
+import { onMounted, ref, watch } from "vue";
 import { Dialog, FormInstance, Notify, SwipeCellInstance } from "vant";
 import FieldCheckbox from "../components/FieldCheckbox.vue";
 import FieldSelectPicker from "../components/FieldSelectPicker.vue";
@@ -108,7 +115,7 @@ const list = ref<MenuModel[]>([])
 const foodList = ref<FoodModel[]>([])
 const typeList = ref<TypeModel[]>([])
 
-let model = ref<MenuModel>(
+const model = ref<MenuModel>(
     {
         menuName: '',
         typeId: '',
@@ -116,6 +123,7 @@ let model = ref<MenuModel>(
     }
 )
 
+//初始化数据
 onMounted(() => {
     http
         .get<FoodModel[]>(url.FoodList, {})
@@ -151,10 +159,17 @@ onMounted(() => {
         });
 })
 
+//搜索
+const searchVal = ref('');
+watch(searchVal, (newVal) => {
+    handleLoadEvevt(newVal)
+})
+
 //列表数据加载
-function handleLoadEvevt() {
+function handleLoadEvevt(content = '') {
+    isLoading.value = true;
     http
-        .get<MenuModel[]>(url.MenuList, {})
+        .get<MenuModel[]>(url.MenuList, { text: content })
         .then((res) => {
             if (res.statusCode == 200 && res.data) {
                 list.value = res.data;

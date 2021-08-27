@@ -1,11 +1,18 @@
 <template>
-    <van-nav-bar
-        title="食材"
-        right-text="新增"
-        @click-right="handleAddShow"
-        :border="true"
-        safe-area-inset-top
-    />
+    <van-nav-bar right-text="新增" @click-right="handleAddShow" :border="true" safe-area-inset-top>
+        <template #title>
+            <van-field
+                v-model="searchVal"
+                placeholder="搜索"
+                input-align="center"
+                style="width: 100%;"
+            >
+                <template #button>
+                    <van-button size="small" plain type="primary">清空</van-button>
+                </template>
+            </van-field>
+        </template>
+    </van-nav-bar>
 
     <van-list
         v-model:loading="isLoading"
@@ -60,7 +67,7 @@
 <script setup lang="ts">
 import url from "../api/url";
 import { CallBack, useHttp } from "../api/http";
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import { Dialog, FormInstance, Notify, SwipeCellInstance } from "vant";
 
 const swipeCellRef = ref<SwipeCellInstance>();
@@ -73,16 +80,23 @@ const isLoading = ref(false);
 const isFinished = ref(false);
 const list = ref<FoodModel[]>([])
 
-let model = ref<FoodModel>(
+const model = ref<FoodModel>(
     {
         foodName: '',
     }
 )
 
+//搜索
+const searchVal = ref('');
+watch(searchVal, (newVal) => {
+    handleLoadEvevt(newVal)
+})
+
 //列表数据加载
-function handleLoadEvevt() {
+function handleLoadEvevt(content = '') {
+    isLoading.value = true;
     http
-        .get<FoodModel[]>(url.FoodList, {})
+        .get<FoodModel[]>(url.FoodList, { text: content })
         .then((res) => {
             if (res.statusCode == 200 && res.data) {
                 list.value = res.data;

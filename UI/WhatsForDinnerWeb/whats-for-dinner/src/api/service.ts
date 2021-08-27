@@ -3,8 +3,8 @@ import { ADD_RTOKEN, ADD_USERINFO, REMOVE_USERAUTH, store } from '../models/stor
 import { ADD_TOKENINFO } from '../models/store';
 
 const service = axios.create({
-    baseURL: "/api",
-    // baseURL: "http://www.hafuhafu.cn:9000",
+    // baseURL: "/api",
+    baseURL: "http://www.hafuhafu.cn:9000",
     timeout: 1 * 60 * 1000
 });
 
