@@ -153,7 +153,7 @@ namespace HuLuProject.Core.Managers.Wfd
             var result1 = await uow.Orm.Delete<MenuEntity>().Where(m => m.UserId == userId && m.Id == menuId).ExecuteAffrowsAsync();
             var result2 = await uow.Orm.Delete<MenuFoodEntity>().Where(m => m.MenuId == menuId).ExecuteAffrowsAsync();
             uow.Commit();
-            return result1 > 0 && result2 > 0;
+            return result1 > 0 || result2 > 0;
         }
 
         /// <summary>
