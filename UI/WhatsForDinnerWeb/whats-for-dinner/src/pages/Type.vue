@@ -189,7 +189,7 @@ function handleClose(event: { name: string, position: 'left' | 'right' | 'cell' 
 function handleAddOrUpdateClick() {
     formRef.value?.validate()
         .then(() => {
-            const nameArr = model.value.typeName.replace(new RegExp('，', 'g'), ',').split(',');
+            const nameArr = model.value.typeName.replaceAll('，', ',').split(',');
             const promiseList: Promise<CallBack<boolean>>[] = []
             nameArr.forEach((item) => {
                 const tempModel = JSON.parse(JSON.stringify(model.value));
