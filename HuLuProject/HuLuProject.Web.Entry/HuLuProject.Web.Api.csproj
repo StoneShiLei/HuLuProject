@@ -25,6 +25,9 @@
     <ProjectReference Include="..\HuLuProject.Web.Core\HuLuProject.Web.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <None Update="Dockerfile">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="hulu-project.yaml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
