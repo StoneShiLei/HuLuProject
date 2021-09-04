@@ -24,6 +24,11 @@
   <ItemGroup>
     <ProjectReference Include="..\HuLuProject.Web.Core\HuLuProject.Web.Core.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <None Update="hulu-project.yaml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
   <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="" properties_4launchsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
 
 </Project>
