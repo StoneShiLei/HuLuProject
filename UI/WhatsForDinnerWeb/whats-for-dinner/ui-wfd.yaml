@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ui-whatsfordinner
+  namespace: default
+  labels:
+    app: ui-wfd
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ui-wfd
+  template:
+    metadata:
+      labels:
+        app: ui-wfd
+    spec:
+      containers:
+        - name: ui-whatsfordinner
+          image: ${IMAGE}
+          ports:
+            - containerPort: 80
+              protocol: TCP
+          imagePullPolicy: Always
+      restartPolicy: Always
