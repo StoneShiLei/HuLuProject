@@ -4,7 +4,7 @@ import { ADD_TOKENINFO } from '../models/store';
 
 const service = axios.create({
     // baseURL: "/api",
-    baseURL: "http://www.hafuhafu.cn:9000",
+    baseURL: "https://api.hafuhafu.cn",
     timeout: 1 * 60 * 1000
 });
 
