@@ -1,4 +1,25 @@
 ﻿---
+kind: secret
+name: username
+get:
+  path: docker-secret
+  name: DOCKER_USERNAME
+
+---
+kind: secret
+name: password
+get:
+  path: docker-secret
+  name: DOCKER_PASSWORD
+
+---
+kind: secret
+name: kubeconfig
+get:
+  path: kubeconfig
+  name: KUBECONFIG
+
+---
 kind: pipeline
 type: kubernetes
 name: hulu-project-api
@@ -29,7 +50,7 @@ steps:
 - name: dron8s-api
   image: bh90210/dron8s:latest
   settings:
-    yaml: ./hulu-project-deploy
+    yaml: ./hulu-project-deploy.yaml
     # variables. Must be lowercase, Usage: {{.service_name}}
     image_tag: ${DRONE_COMMIT}
     kubeconfig:
@@ -38,7 +59,7 @@ steps:
 - name: docker-ui
   image: plugins/docker
   settings:
-    dockerfile: ./UI/WhatsForDinnerWeb/whats-for-dinner/Dockerfile
+    dockerfile: UI/WhatsForDinnerWeb/whats-for-dinner/Dockerfile
     context: HuLuProject/
     username:
       from_secret: username
@@ -57,29 +78,3 @@ steps:
     image_tag: ${DRONE_COMMIT}
     kubeconfig:
         from_secret: kubeconfig
-
----
-kind: pipeline
-type: kubernetes
-name: drone-secrets
-
----
-kind: secret
-name: username
-get:
-  path: docker-secret
-  name: DOCKER_USERNAME
-
----
-kind: secret
-name: password
-get:
-  path: docker-secret
-  name: DOCKER_PASSWORD
-
----
-kind: secret
-name: kubeconfig
-get:
-  path: kubeconfig
-  name: KUBECONFIG
