@@ -3,6 +3,7 @@ type: kubernetes
 name: sd.services.modules.demo
 steps:
 - name: test
+  image: busybox
   environment:
     USERNAME:
       from_secret: username
