@@ -29,7 +29,6 @@ metadata:
   namespace: drone
 steps:
 - name: test
-  depends_on: [clone]
   image: plugins/docker
   environment:
     USERNAME:
