@@ -37,8 +37,9 @@ steps:
     PASSWORD:
       from_secret: password
   commands:
-  - env
-  - sudo docker login --username=葫芦0811 registry.cn-shanghai.aliyuncs.com --password shilei0811
+  - echo $USERNAME
+  - echo $PASSWORD
+  - docker login --username=葫芦0811 registry.cn-shanghai.aliyuncs.com --password shilei0811
 
 # ---
 # kind: pipeline
