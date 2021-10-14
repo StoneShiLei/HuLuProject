@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: ui-whatsfordinner
-          image: ${IMAGE}
+          image: registry-vpc.cn-shanghai.aliyuncs.com/hulu0811/whatsfordinner:{{.image_tag}}
           ports:
             - containerPort: 80
               protocol: TCP

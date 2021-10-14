@@ -23,7 +23,7 @@ spec:
             defaultMode: 420
       containers:
         - name: hulu-project-api
-          image: ${IMAGE}
+          image: registry-vpc.cn-shanghai.aliyuncs.com/hulu0811/huluproject-api:{{.image_tag}}
           ports:
             - containerPort: 80
               protocol: TCP
