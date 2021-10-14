@@ -19,80 +19,80 @@ get:
   path: kubeconfig
   name: KUBECONFIG
 
-# ---
-# kind: pipeline
-# type: kubernetes
-# name: test1
-# clone:
-#   disable: true
-# steps:
-# - name: test
-#   image: plugins/docker
-#   environment:
-#     KUBECONFIG: 
-#       from_secret: kubeconfig
-#     TEST: ddd
-#     USERNAME:
-#       from_secret: username
-#     PASSWORD:
-#       from_secret: password
-#   commands:
-#   - env
-
 ---
 kind: pipeline
 type: kubernetes
-name: hulu-project-api
-
+name: test1
+clone:
+  disable: true
 steps:
-- name: docker-api
-  depends_on: [clone]
+- name: test
   image: plugins/docker
-  settings:
-    mirror: https://jnyis2wm.mirror.aliyuncs.com
-    dockerfile: HuLuProject/HuLuProject.Web.Entry/Dockerfile
-    context: HuLuProject/
-    username:
+  environment:
+    KUBECONFIG: 
+      from_secret: kubeconfig
+    TEST: ddd
+    USERNAME:
       from_secret: username
-    password:
+    PASSWORD:
       from_secret: password
-    repo: registry-vpc.cn-shanghai.aliyuncs.com/hulu0811/huluproject-api
-    registry: registry.cn-shanghai.aliyuncs.com
-    tags:
-      - latest
-      - ${DRONE_COMMIT}
-- name: dron8s-api
-  depends_on: [docker-api]
-  image: bh90210/dron8s:latest
-  settings:
-    yaml: ./hulu-project-deploy.yaml
-    # variables. Must be lowercase, Usage: {{.image_tag}}
-    image_tag: ${DRONE_COMMIT}
-    kubeconfig:
-        from_secret: kubeconfig
+  commands:
+  - env
+
+# ---
+# kind: pipeline
+# type: kubernetes
+# name: hulu-project-api
+
+# steps:
+# - name: docker-api
+#   depends_on: [clone]
+#   image: plugins/docker
+#   settings:
+#     mirror: https://jnyis2wm.mirror.aliyuncs.com
+#     dockerfile: HuLuProject/HuLuProject.Web.Entry/Dockerfile
+#     context: HuLuProject/
+#     username:
+#       from_secret: username
+#     password:
+#       from_secret: password
+#     repo: registry-vpc.cn-shanghai.aliyuncs.com/hulu0811/huluproject-api
+#     registry: registry.cn-shanghai.aliyuncs.com
+#     tags:
+#       - latest
+#       - ${DRONE_COMMIT}
+# - name: dron8s-api
+#   depends_on: [docker-api]
+#   image: bh90210/dron8s:latest
+#   settings:
+#     yaml: ./hulu-project-deploy.yaml
+#     # variables. Must be lowercase, Usage: {{.image_tag}}
+#     image_tag: ${DRONE_COMMIT}
+#     kubeconfig:
+#         from_secret: kubeconfig
 
 
-- name: docker-ui
-  depends_on: [clone]
-  image: plugins/docker
-  settings:
-    mirror: https://jnyis2wm.mirror.aliyuncs.com
-    dockerfile: UI/WhatsForDinnerWeb/whats-for-dinner/Dockerfile
-    username:
-      from_secret: username
-    password:
-      from_secret: password
-    repo: registry-vpc.cn-shanghai.aliyuncs.com/hulu0811/whatsfordinner
-    registry: registry.cn-shanghai.aliyuncs.com
-    tags:
-      - latest
-      - ${DRONE_COMMIT}
-- name: dron8s-ui
-  depends_on: [docker-ui]
-  image: bh90210/dron8s:latest
-  settings:
-    yaml: ./ui-wfd-deploy.yaml
-    # variables. Must be lowercase, Usage: {{.service_name}}
-    image_tag: ${DRONE_COMMIT}
-    kubeconfig:
-        from_secret: kubeconfig
+# - name: docker-ui
+#   depends_on: [clone]
+#   image: plugins/docker
+#   settings:
+#     mirror: https://jnyis2wm.mirror.aliyuncs.com
+#     dockerfile: UI/WhatsForDinnerWeb/whats-for-dinner/Dockerfile
+#     username:
+#       from_secret: username
+#     password:
+#       from_secret: password
+#     repo: registry-vpc.cn-shanghai.aliyuncs.com/hulu0811/whatsfordinner
+#     registry: registry.cn-shanghai.aliyuncs.com
+#     tags:
+#       - latest
+#       - ${DRONE_COMMIT}
+# - name: dron8s-ui
+#   depends_on: [docker-ui]
+#   image: bh90210/dron8s:latest
+#   settings:
+#     yaml: ./ui-wfd-deploy.yaml
+#     # variables. Must be lowercase, Usage: {{.service_name}}
+#     image_tag: ${DRONE_COMMIT}
+#     kubeconfig:
+#         from_secret: kubeconfig
