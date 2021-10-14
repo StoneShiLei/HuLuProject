@@ -29,8 +29,6 @@ type: kubernetes
 name: test1
 clone:
   disable: true
-metadata:
-  namespace: drone
 steps:
 - name: test
   image: plugins/docker
