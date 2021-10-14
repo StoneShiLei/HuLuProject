@@ -30,11 +30,12 @@ name: test1
 clone:
   disable: true
 metadata:
-  namespace: drone
+  namespace: default
 steps:
 - name: test
   image: plugins/docker
   environment:
+    TEST: ddd
     USERNAME:
       from_secret: username
     PASSWORD:
