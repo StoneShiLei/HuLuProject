@@ -25,33 +25,33 @@ steps:
     kubeconfig:
         from_secret: kubeconfig
 
----
-kind: pipeline
-type: kubernetes
-name: ui-whatsfordinner
+# ---
+# kind: pipeline
+# type: kubernetes
+# name: ui-whatsfordinner
 
-steps:
-- name: docker  
-  image: plugins/docker
-  settings:
-    dockerfile: ./UI/WhatsForDinnerWeb/whats-for-dinner/Dockerfile
-    username:
-      from_secret: username
-    password:
-      from_secret: password
-    repo: registry-vpc.cn-shanghai.aliyuncs.com/hulu0811/whatsfordinner
-    registry: registry.cn-shanghai.aliyuncs.com
-    tags:
-      - latest
-      - ${DRONE_COMMIT}
-- name: dron8s
-  image: bh90210/dron8s:latest
-  settings:
-    yaml: ./ui-wfd-deploy.yaml
-    # variables. Must be lowercase, Usage: {{.service_name}}
-    image_tag: ${DRONE_COMMIT}
-    kubeconfig:
-        from_secret: kubeconfig
+# steps:
+# - name: docker  
+#   image: plugins/docker
+#   settings:
+#     dockerfile: ./UI/WhatsForDinnerWeb/whats-for-dinner/Dockerfile
+#     username:
+#       from_secret: username
+#     password:
+#       from_secret: password
+#     repo: registry-vpc.cn-shanghai.aliyuncs.com/hulu0811/whatsfordinner
+#     registry: registry.cn-shanghai.aliyuncs.com
+#     tags:
+#       - latest
+#       - ${DRONE_COMMIT}
+# - name: dron8s
+#   image: bh90210/dron8s:latest
+#   settings:
+#     yaml: ./ui-wfd-deploy.yaml
+#     # variables. Must be lowercase, Usage: {{.service_name}}
+#     image_tag: ${DRONE_COMMIT}
+#     kubeconfig:
+#         from_secret: kubeconfig
 
 ---
 kind: secret
