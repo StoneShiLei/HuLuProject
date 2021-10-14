@@ -1,5 +1,20 @@
 ﻿kind: pipeline
 type: kubernetes
+name: sd.services.modules.demo
+steps:
+- name: test
+  environment:
+    USERNAME:
+      from_secret: username
+    PASSWORD:
+      from_secret: password
+  commands:
+  - echo $USERNAME
+  - echo $PASSWORD
+
+---
+kind: pipeline
+type: kubernetes
 name: hulu-project-api
 
 steps:
