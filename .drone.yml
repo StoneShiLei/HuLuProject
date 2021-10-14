@@ -49,6 +49,7 @@ steps:
   depends_on: [clone]
   image: plugins/docker
   settings:
+    mirror: https://jnyis2wm.mirror.aliyuncs.com
     dockerfile: HuLuProject/HuLuProject.Web.Entry/Dockerfile
     context: HuLuProject/
     username:
@@ -74,6 +75,7 @@ steps:
   depends_on: [clone]
   image: plugins/docker
   settings:
+    mirror: https://jnyis2wm.mirror.aliyuncs.com
     dockerfile: UI/WhatsForDinnerWeb/whats-for-dinner/Dockerfile
     context: HuLuProject/
     username:
