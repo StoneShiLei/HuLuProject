@@ -1,6 +1,8 @@
 ﻿---
 kind: secret
 name: username
+metadata:
+  namespace: default
 get:
   path: docker-secret
   name: DOCKER_USERNAME
@@ -8,6 +10,8 @@ get:
 ---
 kind: secret
 name: password
+metadata:
+  namespace: default
 get:
   path: docker-secret
   name: DOCKER_PASSWORD
