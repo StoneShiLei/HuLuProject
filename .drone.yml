@@ -26,6 +26,7 @@ name: hulu-project-api
 
 steps:
 - name: docker-api
+  depends_on: [clone]
   image: plugins/docker
   settings:
     dockerfile: HuLuProject/HuLuProject.Web.Entry/Dockerfile
@@ -40,6 +41,7 @@ steps:
       - latest
       - ${DRONE_COMMIT}
 - name: dron8s-api
+  depends_on: [docker-api]
   image: bh90210/dron8s:latest
   settings:
     yaml: ./hulu-project-deploy.yaml
@@ -48,39 +50,8 @@ steps:
     kubeconfig:
         from_secret: kubeconfig
 
-# - name: docker-ui
-#   image: plugins/docker
-#   settings:
-#     dockerfile: UI/WhatsForDinnerWeb/whats-for-dinner/Dockerfile
-#     context: HuLuProject/
-#     username:
-#       from_secret: username
-#     password:
-#       from_secret: password
-#     repo: registry-vpc.cn-shanghai.aliyuncs.com/hulu0811/whatsfordinner
-#     registry: registry.cn-shanghai.aliyuncs.com
-#     tags:
-#       - latest
-#       - ${DRONE_COMMIT}
-# - name: dron8s-ui
-#   image: bh90210/dron8s:latest
-#   settings:
-#     yaml: ./ui-wfd-deploy.yaml
-#     # variables. Must be lowercase, Usage: {{.service_name}}
-#     image_tag: ${DRONE_COMMIT}
-#     kubeconfig:
-#         from_secret: kubeconfig
-
----
-kind: pipeline
-type: kubernetes
-name: ui-whatsfordinner
-
-clone:
-  disable: true
-
-steps:
 - name: docker-ui
+  depends_on: [clone]
   image: plugins/docker
   settings:
     dockerfile: UI/WhatsForDinnerWeb/whats-for-dinner/Dockerfile
@@ -95,6 +66,7 @@ steps:
       - latest
       - ${DRONE_COMMIT}
 - name: dron8s-ui
+  depends_on: [docker-ui]
   image: bh90210/dron8s:latest
   settings:
     yaml: ./ui-wfd-deploy.yaml
