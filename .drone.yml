@@ -27,14 +27,6 @@ name: hulu-project-api
 steps:
 - name: docker-api
   image: plugins/docker
-  environment:
-    USERNAME:
-      from_secret: username
-    PASSWORD:
-      from_secret: password
-  commands:
-  - echo $USERNAME
-  - echo $PASSWORD
   settings:
     dockerfile: HuLuProject/HuLuProject.Web.Entry/Dockerfile
     context: HuLuProject/
@@ -51,7 +43,7 @@ steps:
   image: bh90210/dron8s:latest
   settings:
     yaml: ./hulu-project-deploy.yaml
-    # variables. Must be lowercase, Usage: {{.service_name}}
+    # variables. Must be lowercase, Usage: {{.image_tag}}
     image_tag: ${DRONE_COMMIT}
     kubeconfig:
         from_secret: kubeconfig
