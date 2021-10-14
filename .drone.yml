@@ -30,7 +30,7 @@ name: test1
 clone:
   disable: true
 metadata:
-  namespace: default
+  namespace: drone
 steps:
 - name: test
   image: plugins/docker
