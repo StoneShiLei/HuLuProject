@@ -6,7 +6,7 @@ steps:
 - name: docker  
   image: plugins/docker
   settings:
-    dockerfile: HuLuProject/HuLuProject.Web.Entry/Dockerfile
+    dockerfile: ./HuLuProject/HuLuProject.Web.Entry/Dockerfile
     username:
       from_secret: username
     password:
@@ -34,7 +34,7 @@ steps:
 - name: docker  
   image: plugins/docker
   settings:
-    dockerfile: UI/WhatsForDinnerWeb/whats-for-dinner/Dockerfile
+    dockerfile: ./UI/WhatsForDinnerWeb/whats-for-dinner/Dockerfile
     username:
       from_secret: username
     password:
