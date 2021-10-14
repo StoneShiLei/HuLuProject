@@ -2,7 +2,7 @@
 kind: secret
 name: username
 metadata:
-  namespace: default
+  namespace: drone
 get:
   path: docker-secret
   name: DOCKER_USERNAME
@@ -11,7 +11,7 @@ get:
 kind: secret
 name: password
 metadata:
-  namespace: default
+  namespace: drone
 get:
   path: docker-secret
   name: DOCKER_PASSWORD
@@ -35,6 +35,8 @@ steps:
 - name: test
   image: plugins/docker
   environment:
+    KUBECONFIG: 
+      from_secret: kubeconfig
     TEST: ddd
     USERNAME:
       from_secret: username
