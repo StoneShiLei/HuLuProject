@@ -80,7 +80,7 @@ steps:
   image: plugins/docker
   settings:
     mirror: https://jnyis2wm.mirror.aliyuncs.com
-    dockerfile: HuLuProject/UI/WhatsForDinnerWeb/whats-for-dinner/Dockerfile
+    dockerfile: UI/WhatsForDinnerWeb/whats-for-dinner/Dockerfile
     username:
       from_secret: username
     password:
