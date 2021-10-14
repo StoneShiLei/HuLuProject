@@ -36,8 +36,7 @@ steps:
     PASSWORD:
       from_secret: password
   commands:
-  - echo $USERNAME
-  - echo $PASSWORD
+  - env
 
 # ---
 # kind: pipeline
