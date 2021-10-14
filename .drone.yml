@@ -24,7 +24,7 @@ kind: pipeline
 type: kubernetes
 name: test1
 metadata:
-  namespace: default
+  namespace: drone
 steps:
 - name: test
   depends_on: [clone]
