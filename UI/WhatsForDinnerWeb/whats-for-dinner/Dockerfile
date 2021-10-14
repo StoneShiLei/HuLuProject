@@ -3,7 +3,7 @@ FROM node:14-alpine as build
 WORKDIR /app
 COPY . .
 
-RUN npm config set registry https://registry.npm.taobao.org && npm install && npm run build
+RUN npm install --registry=https://registry.npm.taobao.org && npm run build
 
 FROM nginx
 RUN mkdir /app
