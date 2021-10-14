@@ -6,7 +6,7 @@ steps:
 - name: docker  
   image: plugins/docker
   settings:
-    dockerfile: ./HuLuProject/HuLuProject.Web.Entry/Dockerfile
+    dockerfile: HuLuProject/HuLuProject/HuLuProject.Web.Entry/Dockerfile
     username:
       from_secret: username
     password:
