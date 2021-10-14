@@ -82,6 +82,7 @@ steps:
   settings:
     mirror: https://jnyis2wm.mirror.aliyuncs.com
     dockerfile: UI/WhatsForDinnerWeb/whats-for-dinner/Dockerfile
+    context: UI/WhatsForDinnerWeb/whats-for-dinner/
     username:
       from_secret: username
     password:
