@@ -71,6 +71,7 @@ steps:
     kubeconfig:
         from_secret: kubeconfig
 
+
 - name: docker-ui
   depends_on: [clone]
   image: plugins/docker
