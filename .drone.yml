@@ -13,57 +13,57 @@ steps:
   - echo $USERNAME
   - echo $PASSWORD
 
----
-kind: pipeline
-type: kubernetes
-name: hulu-project-api
+# ---
+# kind: pipeline
+# type: kubernetes
+# name: hulu-project-api
 
-steps:
-- name: docker-api
-  image: plugins/docker
-  settings:
-    dockerfile: HuLuProject/HuLuProject.Web.Entry/Dockerfile
-    context: HuLuProject/
-    username:
-      from_secret: username
-    password:
-      from_secret: password
-    repo: registry-vpc.cn-shanghai.aliyuncs.com/hulu0811/huluproject-api
-    registry: registry.cn-shanghai.aliyuncs.com
-    tags:
-      - latest
-      - ${DRONE_COMMIT}
-- name: dron8s-api
-  image: bh90210/dron8s:latest
-  settings:
-    yaml: ./hulu-project-deploy
-    # variables. Must be lowercase, Usage: {{.service_name}}
-    image_tag: ${DRONE_COMMIT}
-    kubeconfig:
-        from_secret: kubeconfig
+# steps:
+# - name: docker-api
+#   image: plugins/docker
+#   settings:
+#     dockerfile: HuLuProject/HuLuProject.Web.Entry/Dockerfile
+#     context: HuLuProject/
+#     username:
+#       from_secret: username
+#     password:
+#       from_secret: password
+#     repo: registry-vpc.cn-shanghai.aliyuncs.com/hulu0811/huluproject-api
+#     registry: registry.cn-shanghai.aliyuncs.com
+#     tags:
+#       - latest
+#       - ${DRONE_COMMIT}
+# - name: dron8s-api
+#   image: bh90210/dron8s:latest
+#   settings:
+#     yaml: ./hulu-project-deploy
+#     # variables. Must be lowercase, Usage: {{.service_name}}
+#     image_tag: ${DRONE_COMMIT}
+#     kubeconfig:
+#         from_secret: kubeconfig
 
-- name: docker-ui
-  image: plugins/docker
-  settings:
-    dockerfile: ./UI/WhatsForDinnerWeb/whats-for-dinner/Dockerfile
-    context: HuLuProject/
-    username:
-      from_secret: username
-    password:
-      from_secret: password
-    repo: registry-vpc.cn-shanghai.aliyuncs.com/hulu0811/whatsfordinner
-    registry: registry.cn-shanghai.aliyuncs.com
-    tags:
-      - latest
-      - ${DRONE_COMMIT}
-- name: dron8s-ui
-  image: bh90210/dron8s:latest
-  settings:
-    yaml: ./ui-wfd-deploy.yaml
-    # variables. Must be lowercase, Usage: {{.service_name}}
-    image_tag: ${DRONE_COMMIT}
-    kubeconfig:
-        from_secret: kubeconfig
+# - name: docker-ui
+#   image: plugins/docker
+#   settings:
+#     dockerfile: ./UI/WhatsForDinnerWeb/whats-for-dinner/Dockerfile
+#     context: HuLuProject/
+#     username:
+#       from_secret: username
+#     password:
+#       from_secret: password
+#     repo: registry-vpc.cn-shanghai.aliyuncs.com/hulu0811/whatsfordinner
+#     registry: registry.cn-shanghai.aliyuncs.com
+#     tags:
+#       - latest
+#       - ${DRONE_COMMIT}
+# - name: dron8s-ui
+#   image: bh90210/dron8s:latest
+#   settings:
+#     yaml: ./ui-wfd-deploy.yaml
+#     # variables. Must be lowercase, Usage: {{.service_name}}
+#     image_tag: ${DRONE_COMMIT}
+#     kubeconfig:
+#         from_secret: kubeconfig
 
 ---
 kind: secret
