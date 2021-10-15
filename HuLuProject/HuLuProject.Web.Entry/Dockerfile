@@ -19,7 +19,7 @@ COPY ["Furion.Extras.ObjectMapper.Mapster/Furion.Extras.ObjectMapper.Mapster.csp
 RUN dotnet restore "HuLuProject.Web.Entry/HuLuProject.Web.Api.csproj"
 COPY . .
 WORKDIR "/src/HuLuProject.Web.Entry"
-RUN dotnet build "HuLuProject.Web.Api.csproj" -c Release -o /app/build
+RUN dotnet build "HuLuProject.Web.Api.csproj" -c Release -o /app/build -s https://api.nuget.org/v3/index.json
 
 FROM build AS publish
 RUN dotnet publish "HuLuProject.Web.Api.csproj" -c Release -o /app/publish
